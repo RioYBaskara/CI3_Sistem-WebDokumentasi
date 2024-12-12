@@ -30,3 +30,21 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 *.sublime-project
 /tests/tests/
 /tests/results/
+
+# Main Index PHP
+/index.php
+
+# Mac OS
+.DS_Store
+
+# Error Log
+application/logs/*.*
+!application/logs/index.html
+
+# Temporary Log
+tmp/*
+!tmp/index.html
+
+# DB
+application/config/database.php
+application/config/config.php
