@@ -24,9 +24,11 @@
             <h5 class="text-head5 font-[700]">Techno Medic</h5>
         </div>
         <div class="flex w-auto h-auto transition-all hover:opacity-100 opacity-60">
-            <a href="#">
-                <i class="fa fa-search "></i>
-            </a>
+            <h1 class="px-1 navbar-brand navbar-brand-autodark">
+                <a href=".">
+                    <i class="fa fa-search "></i>
+                </a>
+            </h1>
         </div>
     </div>
 
@@ -45,7 +47,7 @@
             </div>
             <div class="flex content-center justify-center w-auto h-auto ">
                 <div class="w-auto h-auto px-6 py-4 text-center transition-all border-4 rounded-full border-accent bg-accent text-second font-raleway hover:bg-accent/80 hover:border-4 hover:border-second"
-                    onclick="location.href='#docs';" style="cursor: pointer">
+                    onclick="location.href='<?= base_url(); ?>template';" style="cursor: pointer">
                     <p class="text-p md:text-head6 lg:text-head5 font-[700]">Loremipsun</p>
                 </div>
             </div>
