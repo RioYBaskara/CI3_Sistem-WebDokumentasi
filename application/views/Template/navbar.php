@@ -45,7 +45,7 @@
         <div class="collapse navbar-collapse" id="navbar-menu">
             <div>
                 <h5 class="px-1 ">
-                    <h1>Dokumentasi SIMRS - ITM</h1>
+                    <h3>Dokumentasi SIMRS - ITM</h3>
                 </h5>
             </div>
         </div>
