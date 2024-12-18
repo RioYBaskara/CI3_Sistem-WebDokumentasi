@@ -82,8 +82,8 @@
     <div class="page-nav">
         <div class="container-xl">
             <div class="justify-content-between row">
-                <div class="col col-md-3">
-                    <a href="" class="py-0 btn w-100 card">
+                <div class="mb-2 col-12 mb-md-0 col-md-4 col-lg-3">
+                    <a href="" class="p-0 btn w-100 card">
                         <div class=" w-100">
                             <div class="py-2 card-header">
                                 <h3 class="opacity-50 card-title">
@@ -93,8 +93,8 @@
                         </div>
                     </a>
                 </div>
-                <div class="col col-md-3">
-                    <a href="" class="py-0 btn w-100 card">
+                <div class="col-12 col-md-4 col-lg-3">
+                    <a href="" class="p-0 btn w-100 card">
                         <div class=" w-100">
                             <div class="py-2 card-header justify-content-end">
                                 <h3 class="opacity-50 card-title">

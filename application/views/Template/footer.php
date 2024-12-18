@@ -603,10 +603,18 @@
 
 <script>
     $(".search").click(function () {
-        $('#modal-report').modal('show');
+        $('#modal-search').modal('show');
     });
 
     $('[data-bs-toggle="tooltip"]').tooltip()
+</script>
+
+<script type="text/javascript">
+    jQuery(function ($) {
+        $('#modal-search').on('shown.bs.modal', function () {
+            $('input[name="search"]').focus();
+        });
+    });
 </script>
 </body>
 
