@@ -20,7 +20,7 @@ module.exports = {
 				logoitm: "url('./assets/tailwind/img/logoitm.png')",
 			},
 			colors: {
-				base: "#40434E",
+				base: "#182433",
 				accent: "#15B4B0",
 				second: "#E6E8E6",
 			},

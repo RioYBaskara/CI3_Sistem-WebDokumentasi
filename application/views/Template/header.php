@@ -13,13 +13,16 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Dashboard - Tabler - Premium and Open Source dashboard template with responsive and high quality UI.</title>
+    <!-- fieldmarktitle -->
+    <title>Dokumentasi - SIMRS ITM</title>
     <!-- CSS files -->
+    <link rel="stylesheet" href="assets/css/fontawesome/css/font-awesome.min.css" />
     <link href="<?= base_url(); ?>assets/tabler/dist/css/tabler.min.css?1692870487" rel="stylesheet" />
     <link href="<?= base_url(); ?>assets/tabler/dist/css/tabler-flags.min.css?1692870487" rel="stylesheet" />
     <link href="<?= base_url(); ?>assets/tabler/dist/css/tabler-payments.min.css?1692870487" rel="stylesheet" />
     <link href="<?= base_url(); ?>assets/tabler/dist/css/tabler-vendors.min.css?1692870487" rel="stylesheet" />
     <link href="<?= base_url(); ?>assets/tabler/dist/css/demo.min.css?1692870487" rel="stylesheet" />
+    <link href="<?= base_url(); ?>assets/css/fontawesome/css/font-awesome.min.css" />
     <style>
         @import url('https://rsms.me/inter/inter.css');
 
