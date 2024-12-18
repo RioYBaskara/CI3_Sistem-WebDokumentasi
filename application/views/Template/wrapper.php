@@ -65,8 +65,7 @@
                             <div class="">
                                 <div>
                                     <ul class="p-0 space-y-2 list-unstyled">
-                                        <li><a href="#PT. Indo Techno Medic"
-                                                class="font-medium link-secondary text-headers">PT. Indo
+                                        <li><a href="#PT. Indo Techno Medic" class="link-secondary">PT. Indo
                                                 Techno Medic</a></li>
                                         <li><a href="#Legalitas" class="link-secondary">Legalitas</a></li>
                                         <li><a href="#Lokasi" class="link-secondary">Lokasi</a></li>
@@ -90,7 +89,7 @@
                                 <h3 class="opacity-50 card-title">
                                     <- Sebelumnya</h3>
                             </div>
-                            <div class="opacity-75  card-body w-100 text-start">Sejarah SIMRS</div>
+                            <div class="opacity-75 card-body w-100 text-start">Sejarah SIMRS</div>
                         </div>
                     </a>
                 </div>

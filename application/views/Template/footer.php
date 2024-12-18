@@ -1,4 +1,8 @@
 <!-- Libs JS -->
+<script src="<?= base_url(); ?>assets/vendor/jquery/jquery.min.js"></script>
+<script src="<?= base_url(); ?>assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<script src="<?= base_url(); ?>assets/vendor/jquery-easing/jquery.easing.min.js"></script>
 <script src="<?= base_url(); ?>assets/tabler/dist/libs/apexcharts/dist/apexcharts.min.js?1692870487" defer></script>
 <script src="<?= base_url(); ?>assets/tabler/dist/libs/jsvectormap/dist/js/jsvectormap.min.js?1692870487"
     defer></script>
@@ -595,6 +599,14 @@
         })).render();
     });
     // @formatter:on
+</script>
+
+<script>
+    $(".search").click(function () {
+        $('#modal-report').modal('show');
+    });
+
+    $('[data-bs-toggle="tooltip"]').tooltip()
 </script>
 </body>
 
