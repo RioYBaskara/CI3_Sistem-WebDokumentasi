@@ -47,7 +47,7 @@
             </div>
             <div class="flex content-center justify-center w-auto h-auto ">
                 <div class="w-auto h-auto px-6 py-4 text-center transition-all border-4 rounded-full border-accent bg-accent text-second font-raleway hover:bg-accent/80 hover:border-4 hover:border-second"
-                    onclick="location.href='<?= base_url(); ?>template';" style="cursor: pointer">
+                    onclick="location.href='<?= base_url(); ?>template?theme=dark';" style="cursor: pointer">
                     <p class="text-p md:text-head6 lg:text-head5 font-[700]">Loremipsun</p>
                 </div>
             </div>

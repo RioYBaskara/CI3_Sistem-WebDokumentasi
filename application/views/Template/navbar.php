@@ -45,8 +45,9 @@
         </div>
         <div class="collapse navbar-collapse" id="navbar-menu">
             <div>
-                <h5 class="px-1 ">
-                    <h3>Dokumentasi SIMRS - ITM</h3>
+                <h5 class="px-1 bold">
+                    <!-- fieldmarkfasyankes -->
+                    <h1><strong>Dokumentasi SIMRS - RS Umum Daerah Tidar</strong></h1>
                 </h5>
             </div>
         </div>
