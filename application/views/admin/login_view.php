@@ -32,7 +32,6 @@
             margin: 0;
             padding: 0;
             overflow: hidden;
-            /* Untuk mencegah scrollbar */
         }
 
         .rotating-background {
@@ -41,13 +40,25 @@
             left: 0;
             width: 200vw;
             height: 200vh;
-            /* background-size: cover; */
             background-size: contain;
             background-repeat: no-repeat;
-            /* background-position: center; */
-            z-index: -1;
-            animation: rotateBackground 3s linear forwards;
+            z-index: -2;
+            animation: rotateBackground 4s linear forwards, subtleMovement 6s infinite ease-in-out;
+            animation-delay: 0s, 4s;
+        }
 
+        .rotating-background-light {
+            position: fixed;
+            opacity: 10%;
+            top: 0;
+            left: 0;
+            width: 190vw;
+            height: 190vh;
+            background-size: contain;
+            background-repeat: no-repeat;
+            z-index: -2;
+            animation: rotateBackgroundlight 4s linear forwards, subtleMovement 7s infinite ease-in-out;
+            animation-delay: 0s, 4s;
         }
 
         @keyframes rotateBackground {
@@ -60,14 +71,37 @@
             }
         }
 
-        .content {
-            position: relative;
-            z-index: 1;
-            /* Di atas background */
-            font-family: var(--tblr-font-sans-serif);
-            text-align: center;
-            color: #333;
-            margin-top: 50px;
+        @keyframes rotateBackgroundlight {
+            0% {
+                transform: rotate(50deg);
+            }
+
+            100% {
+                transform: rotate(25deg);
+            }
+        }
+
+        /* Animasi untuk gerakan kecil */
+        @keyframes subtleMovement {
+            0% {
+                transform: rotate(25deg) translate(0, 0);
+            }
+
+            25% {
+                transform: rotate(26deg) translate(2px, -1px);
+            }
+
+            50% {
+                transform: rotate(25.5deg) translate(-1px, 2px);
+            }
+
+            75% {
+                transform: rotate(24.8deg) translate(1px, -2px);
+            }
+
+            100% {
+                transform: rotate(25deg) translate(0, 0);
+            }
         }
     </style>
 </head>
@@ -76,6 +110,8 @@
     <script src="<?= base_url(); ?>assets/tabler/dist/js/demo-theme.min.js?1692870487"></script>
     <div class="rotating-background"
         style="background-image: url(<?= base_url(); ?>/assets/tailwind/img/Wireframe.png);"></div>
+    <div class="rotating-background-light"
+        style="background-image: url(<?= base_url(); ?>/assets/tailwind/img/Wireframedark.png);"></div>
     <div class="page page-center">
         <div class="container py-4 container-tight">
             <div class="mb-4 text-center">
