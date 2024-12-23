@@ -74,6 +74,19 @@
                                     d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7" />
                             </svg>
                         </a>
+                        <a href="<?= base_url(); ?>Admin/logout" class="px-0 nav-link" title="Logout"
+                            data-bs-toggle="tooltip" data-bs-placement="bottom">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round"
+                                class="icon icon-tabler icons-tabler-outline icon-tabler-logout">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <path
+                                    d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2" />
+                                <path d="M9 12h12l-3 -3" />
+                                <path d="M18 15l3 -3" />
+                            </svg>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -299,7 +312,7 @@
                             <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
                                 Cancel
                             </a>
-                            <a href="<?= base_url(); ?>admin/dokumentasi/<?= $main['fasyankes_kode'] ?>"
+                            <a href="<?= base_url(); ?>Admin/dokumentasi/<?= $main['fasyankes_kode'] ?>"
                                 class="btn btn-info">
                                 Ke Page Dokumentasi
                             </a>
