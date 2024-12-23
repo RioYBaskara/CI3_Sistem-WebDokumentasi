@@ -43,8 +43,8 @@
             background-size: contain;
             background-repeat: no-repeat;
             z-index: -2;
-            animation: rotateBackground 4s linear forwards, subtleMovement 6s infinite ease-in-out;
-            animation-delay: 0s, 4s;
+            animation: rotateBackground 15s linear forwards, subtleMovement 6s infinite ease-in-out;
+            animation-delay: 0s, 15s;
         }
 
         .rotating-background-light {
@@ -57,8 +57,8 @@
             background-size: contain;
             background-repeat: no-repeat;
             z-index: -2;
-            animation: rotateBackgroundlight 4s linear forwards, subtleMovement 7s infinite ease-in-out;
-            animation-delay: 0s, 4s;
+            animation: rotateBackgroundlight 15s linear forwards, subtleMovement 7s infinite ease-in-out;
+            animation-delay: 0s, 15s;
         }
 
         @keyframes rotateBackground {
@@ -137,11 +137,11 @@
                                 Password
                             </label>
                             <div class="input-group input-group-flat">
-                                <input type="password" name="password" required class="form-control"
+                                <input type="password" name="password" required class="form-control" id="password-input"
                                     autocomplete="one-time-code">
                                 <span class="input-group-text">
-                                    <a href="#" class="link-secondary" title="Show password"
-                                        data-bs-toggle="tooltip"><!-- Download SVG icon from http://tabler-icons.io/i/eye -->
+                                    <a href="#" class="link-secondary" title="Show password" data-bs-toggle="tooltip"
+                                        id="toggle-password">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
                                             viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
                                             stroke-linecap="round" stroke-linejoin="round">
@@ -166,6 +166,21 @@
     <!-- Tabler Core -->
     <script src="<?= base_url(); ?>assets/tabler/dist/js/tabler.min.js?1692870487" defer></script>
     <script src="<?= base_url(); ?>assets/tabler/dist/js/demo.min.js?1692870487" defer></script>
+    <script>
+        const passwordInput = document.getElementById('password-input');
+        const togglePassword = document.getElementById('toggle-password');
+
+        togglePassword.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                togglePassword.title = 'Hide password';
+            } else {
+                passwordInput.type = 'password';
+                togglePassword.title = 'Show password';
+            }
+        });
+    </script>
 </body>
 
 </html>

@@ -81,8 +81,8 @@ class Admin extends CI_Controller
     {
         $this->IsLoggedIn();
 
-        var_dump($this->session->userdata());
-        die;
+        // var_dump($this->session->userdata());
+        // die;
 
         $this->load->view('admin/dashboard');
     }
