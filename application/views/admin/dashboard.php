@@ -178,23 +178,23 @@
                                     </div>
                                     <div class="d-flex">
                                         <!-- fieldmarknobpjsfasyankes @$main['fasyankes_bpjs_kode'] -->
-                                        <p class="m-0"><span class="text-secondary">BPJS: </span></p>
+                                        <h4 class="m-0"><span class="text-secondary">BPJS: </span></h4>
                                     </div>
                                     <div class="d-flex">
                                         <!-- fieldmarkalamatlengkapfasyankes @$main['fasyankes_alamat_lengkap'] -->
-                                        <p class="m-0"><span class="text-secondary">Alamat: </span>Jl. Tidar No.30
-                                            A, Magelang</p>
+                                        <h4 class="m-0"><span class="text-secondary">Alamat: </span>Jl. Tidar No.30
+                                            A, Magelang</h4>
                                     </div>
                                 </div>
                                 <div class="py-2 card-body w-100">
                                     <div class="justify-content-between d-flex">
-                                        <div>
+                                        <div class="d-flex align-items-center">
                                             <!-- fieldmarkupdatedate @$main['updated_at'] -->
-                                            <p class="m-0 text-secondary text-start">
-                                                Updated:<br><strong>2024-12-23</strong>
-                                            </p>
+                                            <h6 class="m-0 text-secondary text-start">
+                                                Updated: <strong>2024-12-23</strong>
+                                            </h6>
                                         </div>
-                                        <div>
+                                        <div class="d-flex align-items-center">
                                             <!-- fieldmarkactivest @$main['active-st']-->
                                             <?php
                                             if (@$main['active_st'] == 0) {
