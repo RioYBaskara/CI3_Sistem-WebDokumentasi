@@ -6,6 +6,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
  *  @property session $session 
  *  @property input $input 
  *  @property M_User $M_User 
+ *  @property M_Menu $M_Menu 
+ *  @property M_Fasyankes $M_Fasyankes 
  */
 
 class Admin extends CI_Controller
@@ -15,6 +17,8 @@ class Admin extends CI_Controller
         parent::__construct();
         $this->load->model('M_Fasyankes');
         $this->load->model('M_User');
+        $this->load->model('M_Menu');
+        $this->load->model('M_Content');
         $this->load->library('session');
     }
 
@@ -155,7 +159,44 @@ class Admin extends CI_Controller
     }
 
 
-    // menu
+    public function dokumentasi($fasyankes_kode = null, $submenu = null)
+    {
+        // Pastikan fasyankes_kode tersedia
+        if ($fasyankes_kode == null) {
+            // Menangani jika fasyankes_kode tidak ditemukan
+            redirect('admin/dashboard');
+        }
 
-    // content
+        // Ambil data menu berdasarkan fasyankes_kode
+        $this->load->model('M_Menu');
+        $menu_data = $this->M_Menu->getMenuByFasyankesKode($fasyankes_kode);
+
+        // Jika ada submenu, ambil konten submenu
+        $content_data = null;
+        if ($submenu != null) {
+            $content_data = $this->M_Menu->getContentBySubmenu($submenu, $fasyankes_kode);
+        }
+
+        // Menyiapkan data untuk view
+        $data = [
+            'menu_data' => $menu_data,
+            'content_data' => $content_data,
+            'user_role' => $this->session->userdata('user_role'),
+            'fasyankes_kode' => $fasyankes_kode
+        ];
+
+        // echo '<pre>';
+        // var_dump($data);
+        // echo '</pre>';
+        // die;
+
+        // Load views
+        $this->load->view('admin/dokumentasi/header', $data);
+        $this->load->view('admin/dokumentasi/sidebar', $data);
+        $this->load->view('admin/dokumentasi/navbar', $data);
+        $this->load->view('admin/dokumentasi/wrapper', $data);
+        $this->load->view('admin/dokumentasi/modal', $data);
+        $this->load->view('admin/dokumentasi/footer', $data);
+    }
+
 }

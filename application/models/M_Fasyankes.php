@@ -22,9 +22,8 @@ class M_Fasyankes extends CI_Model
         return $query->result_array();
     }
 
-
-    public function getFasyankesByKode($fasyankes_kode)
+    public function getFasyankesByKode($kode)
     {
-        return $this->db->get_where('fasyankes', ['fasyankes_kode' => $fasyankes_kode])->row_array();
+        return $this->db->get_where('fasyankes', ['fasyankes_kode' => $kode, 'deleted_st' => 0])->row_array();
     }
 }
