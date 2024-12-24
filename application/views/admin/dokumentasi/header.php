@@ -34,6 +34,14 @@
             font-feature-settings: "cv03", "cv04", "cv11";
         }
     </style>
+
+    <style>
+        .crud-menu {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+        }
+    </style>
 </head>
 
 <body>

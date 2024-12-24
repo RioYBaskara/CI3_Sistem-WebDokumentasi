@@ -6,13 +6,33 @@ class M_Menu extends CI_Model
     // Mengambil menu berdasarkan fasyankes_kode
     public function getMenuByFasyankesKode($fasyankes_kode)
     {
-        $this->db->select('*');
+        // Memilih semua kolom dari tabel menu
+        $this->db->select('menu.*, parent.menu_nm as nama_parent');
         $this->db->from('menu');
-        $this->db->where('fasyankes_kode', $fasyankes_kode);
-        $this->db->where('active_st', 1); // Hanya yang aktif
-        $this->db->order_by('menu_order', 'ASC'); // Urutkan berdasarkan menu_order
+
+        // Bergabung dengan tabel menu itu sendiri untuk mendapatkan nama parent berdasarkan menu_parent_id
+        $this->db->join('menu as parent', 'parent.menu_id = menu.menu_parent_id', 'left');
+
+        // Menambahkan filter untuk fasyankes_kode dan hanya memilih menu yang aktif
+        $this->db->where('menu.fasyankes_kode', $fasyankes_kode);
+        $this->db->where('menu.active_st', 1); // Hanya yang aktif
+
+        // Mengurutkan berdasarkan menu_order
+        $this->db->order_by('menu.menu_order', 'ASC');
+
+        // Eksekusi query
         $query = $this->db->get();
-        return $query->result_array();
+
+        // Mengambil hasil query
+        $result = $query->result_array();
+
+        // Menambahkan fasyankes_kode ke setiap item hasil query
+        foreach ($result as &$menu) {
+            $menu['fasyankes_kode'] = $fasyankes_kode; // Menambahkan fasyankes_kode ke setiap menu
+        }
+
+        // Mengembalikan hasil query dalam bentuk array
+        return $result;
     }
 
     // Mengambil konten berdasarkan submenu dan fasyankes_kode
@@ -26,5 +46,28 @@ class M_Menu extends CI_Model
         $this->db->where('menu.active_st', 1);
         $query = $this->db->get();
         return $query->row_array();
+    }
+
+    // Method untuk menambah menu
+    public function addMenu($data)
+    {
+        // Menambahkan data menu baru ke dalam tabel menu
+        $this->db->insert('menu', $data);
+    }
+
+    // Method untuk mengedit menu
+    public function editMenu($data)
+    {
+        // Mengupdate data menu berdasarkan menu_id
+        $this->db->where('menu_id', $data['menu_id']);
+        $this->db->update('menu', $data);
+    }
+
+    // Method untuk menghapus menu
+    public function deleteMenu($menu_id)
+    {
+        // Menghapus menu berdasarkan menu_id
+        $this->db->where('menu_id', $menu_id);
+        $this->db->delete('menu');
     }
 }

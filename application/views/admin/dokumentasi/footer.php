@@ -57,6 +57,44 @@
         });
     });
 </script>
+
+<script>
+    $(document).ready(function () {
+        // Get fasyankes_kode from the URL
+        const fasyankes_kode = window.location.pathname.split("/")[4];
+        $('#fasyankesKode').val(fasyankes_kode);
+
+        // Load menu data into the table
+        function loadMenus() {
+            $.ajax({
+                url: '<?= base_url('admin/getMenus'); ?>',
+                type: 'POST',
+                data: { fasyankes_kode: fasyankes_kode },
+                success: function (response) {
+                    $('#menuTableBody').html(response);
+                }
+            });
+        }
+
+        // Initial load
+        loadMenus();
+
+        // Add menu form submission
+        $('#formAddMenu').on('submit', function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: '<?= base_url('admin/addMenu'); ?>',
+                type: 'POST',
+                data: $(this).serialize(),
+                success: function (response) {
+                    loadMenus();
+                    $('#modalAddMenu').modal('hide');
+                }
+            });
+        });
+    });
+
+</script>
 </body>
 
 </html>

@@ -161,6 +161,8 @@ class Admin extends CI_Controller
 
     public function dokumentasi($fasyankes_kode = null, $submenu = null)
     {
+        $this->IsLoggedIn();
+
         // Pastikan fasyankes_kode tersedia
         if ($fasyankes_kode == null) {
             // Menangani jika fasyankes_kode tidak ditemukan
@@ -186,7 +188,7 @@ class Admin extends CI_Controller
         ];
 
         // echo '<pre>';
-        // var_dump($data);
+        // var_dump($menu_data);
         // echo '</pre>';
         // die;
 
@@ -197,6 +199,72 @@ class Admin extends CI_Controller
         $this->load->view('admin/dokumentasi/wrapper', $data);
         $this->load->view('admin/dokumentasi/modal', $data);
         $this->load->view('admin/dokumentasi/footer', $data);
+    }
+
+    private function groupMenuByParent($menu_data)
+    {
+        $grouped_menu = [];
+        foreach ($menu_data as $menu) {
+            if ($menu['menu_parent_id'] == null) {
+                // Jika menu_parent_id null, berarti menu ini adalah root/parent
+                $grouped_menu[$menu['menu_id']] = [
+                    'parent' => $menu,
+                    'children' => []
+                ];
+            } else {
+                // Jika ada parent, kita cari parent-nya
+                if (isset($grouped_menu[$menu['menu_parent_id']])) {
+                    $grouped_menu[$menu['menu_parent_id']]['children'][] = $menu;
+                }
+            }
+        }
+        return $grouped_menu;
+    }
+
+    // menu
+    // Method untuk menambah menu
+    public function addMenu()
+    {
+        $data = [
+            'menu_nm' => $this->input->post('menu_nm'),
+            'menu_type' => $this->input->post('menu_type'),
+            'menu_order' => $this->input->post('menu_order'),
+            'menu_link' => $this->input->post('menu_link'),
+            'fasyankes_kode' => $this->input->post('fasyankes_kode')
+        ];
+
+        $this->load->model('M_Menu');
+        $this->M_Menu->addMenu($data);
+
+        redirect('admin/dokumentasi/' . $this->input->post('fasyankes_kode'));
+    }
+
+    // Method untuk mengedit menu
+    public function editMenu()
+    {
+        $data = [
+            'menu_id' => $this->input->post('menu_id'),
+            'menu_nm' => $this->input->post('menu_nm'),
+            'menu_type' => $this->input->post('menu_type'),
+            'menu_order' => $this->input->post('menu_order'),
+            'menu_link' => $this->input->post('menu_link')
+        ];
+
+        $this->load->model('M_Menu');
+        $this->M_Menu->editMenu($data);
+
+        redirect('admin/dokumentasi/' . $this->input->post('fasyankes_kode'));
+    }
+
+    // Method untuk menghapus menu
+    public function deleteMenu($menu_id, $fasyankes_kode)
+    {
+        $this->load->model('M_Menu');
+        $this->M_Menu->deleteMenu($menu_id);
+
+        $fasyankes_kode = $this->uri->segment(4);
+
+        redirect('admin/dokumentasi/' . $fasyankes_kode);
     }
 
 }
