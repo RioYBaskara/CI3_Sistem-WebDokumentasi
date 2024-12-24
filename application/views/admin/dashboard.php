@@ -260,44 +260,58 @@
                     <form action="<?= base_url('admin/editfasyankes'); ?>" method="post">
                         <div class="modal-body">
                             <div class="mb-3">
-                                <label class="form-label">Kode Fasyankes</label>
+                                <label class="form-label text-secondary">Kode Fasyankes</label>
                                 <input required type="text" class="form-control" name="fasyankes_kode"
                                     value="<?= $main['fasyankes_kode'] ?>">
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Tipe Fasyankes</label>
+                                <label class="form-label text-secondary">Tipe Fasyankes</label>
                                 <input required type="text" class="form-control" name="fasyankes_tipe"
                                     value="<?= $main['fasyankes_tipe'] ?>">
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Nama Fasyankes</label>
+                                <label class="form-label text-secondary">Nama Fasyankes</label>
                                 <input required type="text" class="form-control" name="fasyankes_nm"
                                     value="<?= $main['fasyankes_nm'] ?>">
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">No. BPJS Fasyankes</label>
+                                <label class="form-label text-secondary">No. BPJS Fasyankes</label>
                                 <input type="text" class="form-control" name="fasyankes_bpjs_kode"
                                     value="<?= $main['fasyankes_bpjs_kode'] ?>">
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Alamat Fasyankes</label>
+                                <label class="form-label text-secondary">Alamat Fasyankes</label>
                                 <input type="text" class="form-control" name="fasyankes_alamat_lengkap"
                                     value="<?= $main['fasyankes_alamat_lengkap'] ?>">
                             </div>
-                            <label class="form-label">Active?</label>
+                            <label class="form-label text-secondary">Active?</label>
                             <div class="mb-3 form-selectgroup-boxes row">
                                 <div class="col-lg-6">
                                     <label class="form-selectgroup-item">
                                         <input type="radio" name="active_st" value="1" class="form-selectgroup-input"
                                             <?= ($main['active_st'] == 1) ? 'checked' : '' ?>>
-                                        <span class="form-selectgroup-label">Active</span>
+                                        <span class="p-3 form-selectgroup-label d-flex align-items-center">
+                                            <span class="me-3">
+                                                <span class="form-selectgroup-check"></span>
+                                            </span>
+                                            <span class="form-selectgroup-label-content">
+                                                <span class="d-block text-secondary">Active</span>
+                                            </span>
+                                        </span>
                                     </label>
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="form-selectgroup-item">
                                         <input type="radio" name="active_st" value="0" class="form-selectgroup-input"
                                             <?= ($main['active_st'] == 0) ? 'checked' : '' ?>>
-                                        <span class="form-selectgroup-label">Nonactive</span>
+                                        <span class="p-3 form-selectgroup-label d-flex align-items-center">
+                                            <span class="me-3">
+                                                <span class="form-selectgroup-check"></span>
+                                            </span>
+                                            <span class="form-selectgroup-label-content">
+                                                <span class="d-block text-secondary">Nonactive</span>
+                                            </span>
+                                        </span>
                                     </label>
                                 </div>
                             </div>
@@ -336,30 +350,30 @@
                 <form id="form" action="<?= base_url('admin/tambahfasyankes'); ?>" method="post">
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label class="form-label">Kode Fasyankes</label>
+                            <label class="form-label text-secondary">Kode Fasyankes</label>
                             <input required type="text" class="form-control" name="fasyankes_kode"
                                 placeholder="Contoh: 3371014">
                         </div>
                         <div class="mb-3 ">
-                            <label class="form-label">Tipe Fasyankes</label>
+                            <label class="form-label text-secondary">Tipe Fasyankes</label>
                             <input required type="text" class="form-control" name="fasyankes_tipe"
                                 placeholder="Contoh: RUMAH SAKIT">
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Nama Fasyankes</label>
+                            <label class="form-label text-secondary">Nama Fasyankes</label>
                             <input required type="text" class="form-control" name="fasyankes_nm"
                                 placeholder="Contoh: RSU TIDAR">
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">No. BPJS Fasyankes</label>
+                            <label class="form-label text-secondary">No. BPJS Fasyankes</label>
                             <input type="text" class="form-control" name="fasyankes_bpjs_kode" placeholder="Contoh: -">
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Alamat Fasyankes</label>
+                            <label class="form-label text-secondary">Alamat Fasyankes</label>
                             <input type="text" class="form-control" name="fasyankes_alamat_lengkap"
                                 placeholder="Contoh: Jl. Tidar No.30 A, Magelang">
                         </div>
-                        <label class="form-label">Active?</label>
+                        <label class="form-label text-secondary">Active?</label>
                         <div class="mb-3 form-selectgroup-boxes row">
                             <div class="col-lg-6">
                                 <label class="form-selectgroup-item">
