@@ -32,10 +32,15 @@
                         <!-- Parent menu -->
                         <li class="fs-5 nav-item <?= $menu['menu_type'] == 'dropdown' ? 'dropdown' : ''; ?>">
                             <a class="fs-5 nav-link <?= $menu['menu_type'] == 'dropdown' ? 'dropdown-toggle' : ''; ?>"
-                                href="<?= $menu['menu_type'] == 'content' ? base_url($menu['menu_link']) : '#'; ?>"
+                                href="<?= $menu['menu_type'] == 'content' ? base_url('admin/dokumentasi/' . $fasyankes_kode . '/' . $menu['menu_link']) : '#'; ?>"
                                 data-bs-toggle="<?= $menu['menu_type'] == 'dropdown' ? 'dropdown' : ''; ?>"
                                 data-bs-auto-close="false">
-                                <span class="fs-5 nav-link-title"><?= $menu['menu_nm']; ?></span>
+                                <!-- Check active_st and display appropriate span -->
+                                <?php if ($menu['active_st'] == 1): ?>
+                                    <span class="status status-green fs-5 nav-link-title"><?= $menu['menu_nm']; ?></span>
+                                <?php else: ?>
+                                    <span class="status status-red fs-5 nav-link-title"><?= $menu['menu_nm']; ?></span>
+                                <?php endif; ?>
                             </a>
                             <?php if ($menu['menu_type'] == 'dropdown'): ?>
                                 <div class="dropdown-menu fs-5">
@@ -68,19 +73,32 @@ function generate_submenus($parent_id, $menu_data, $fasyankes_kode)
         if ($submenu['menu_parent_id'] == $parent_id) {
             // Jika menu type 'content', tampilkan sebagai link biasa
             if ($submenu['menu_type'] == 'content') {
-                $submenu_html .= '<a class="fs-5 dropdown-item" href="' . base_url('admin/dokumentasi/' . $fasyankes_kode . '/' . $submenu['menu_nm']) . '">';
-                $submenu_html .= $submenu['menu_nm'];
-                $submenu_html .= '</a>';
+                if ($submenu['active_st'] == 1) {
+                    $submenu_html .= '<a class="fs-5 dropdown-item" href="' . base_url('admin/dokumentasi/' . $fasyankes_kode . '/' . $submenu['menu_nm']) . '"><span class="fs-5 status status-green">';
+                    $submenu_html .= $submenu['menu_nm'];
+                    $submenu_html .= '</span></a>';
+                } else {
+                    $submenu_html .= '<a class="fs-5 dropdown-item" href="' . base_url('admin/dokumentasi/' . $fasyankes_kode . '/' . $submenu['menu_nm']) . '"><span class="fs-5 status status-red">';
+                    $submenu_html .= $submenu['menu_nm'];
+                    $submenu_html .= '</span></a>';
+                }
             }
 
             // Jika menu type 'dropdown', buat nested dropdown
             if ($submenu['menu_type'] == 'dropdown') {
-                $submenu_html .= '<div class="dropend">';
-                $submenu_html .= '<a class="fs-5 dropdown-item dropdown-toggle" href="#" data-bs-toggle="dropdown" data-bs-auto-close="false">';
-                $submenu_html .= $submenu['menu_nm'];
-                $submenu_html .= '</a>';
-                $submenu_html .= '<div class="dropdown-menu">';
-
+                if ($submenu['active_st'] == 1) {
+                    $submenu_html .= '<div class="dropend">';
+                    $submenu_html .= '<a class="fs-5 dropdown-item dropdown-toggle" href="#" data-bs-toggle="dropdown" data-bs-auto-close="false"><span class="fs-5 status status-green">';
+                    $submenu_html .= $submenu['menu_nm'];
+                    $submenu_html .= '</span></a>';
+                    $submenu_html .= '<div class="dropdown-menu">';
+                } else {
+                    $submenu_html .= '<div class="dropend">';
+                    $submenu_html .= '<a class="fs-5 dropdown-item dropdown-toggle" href="#" data-bs-toggle="dropdown" data-bs-auto-close="false"><span class="fs-5 status status-red">';
+                    $submenu_html .= $submenu['menu_nm'];
+                    $submenu_html .= '</span></a>';
+                    $submenu_html .= '<div class="dropdown-menu">';
+                }
                 // Panggil fungsi ini lagi untuk submenu-nya (rekursif)
                 $submenu_html .= generate_submenus($submenu['menu_id'], $menu_data, $fasyankes_kode);
 

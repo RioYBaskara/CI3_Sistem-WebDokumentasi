@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class M_Menu extends CI_Model
+class M_MenuAdmin extends CI_Model
 {
     // Mengambil menu berdasarkan fasyankes_kode
     public function getMenuByFasyankesKode($fasyankes_kode)
@@ -15,7 +15,6 @@ class M_Menu extends CI_Model
 
         // Menambahkan filter untuk fasyankes_kode dan hanya memilih menu yang aktif
         $this->db->where('menu.fasyankes_kode', $fasyankes_kode);
-        $this->db->where('menu.active_st', 1); // Hanya yang aktif
 
         // Mengurutkan berdasarkan menu_order
         $this->db->order_by('menu.menu_order', 'ASC');
@@ -49,11 +48,20 @@ class M_Menu extends CI_Model
     }
 
     // Method untuk menambah menu
-    public function addMenu($data)
+    public function insertMenu($data)
     {
-        // Menambahkan data menu baru ke dalam tabel menu
         $this->db->insert('menu', $data);
     }
+
+    public function getParentMenus($fasyankes_kode)
+    {
+        return $this->db->table('menu')
+            ->where('menu_parent_id', null)
+            ->where('fasyankes_kode', $fasyankes_kode)
+            ->get()
+            ->getResultArray();
+    }
+
 
     // Method untuk mengedit menu
     public function editMenu($data)

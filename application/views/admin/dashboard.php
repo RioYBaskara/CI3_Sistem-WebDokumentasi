@@ -247,7 +247,7 @@
         </div>
     </div>
 
-    <!-- note:id modal edit fasyankes, nanti di akhirnya ada parameter fasyankes_kode dari fasyankes href databstargets sebelumnya -->
+    <!-- note:modal foreach kurang efektif, karena meload semua modal. kedepannya pakai js agar hanya perlu 1 modal -->
     <?php foreach ($fasyankes as $main): ?>
         <div class="modal modal-blur fade" id="modal-edit-fasyankes-<?= $main['fasyankes_kode'] ?>" tabindex="-1"
             role="dialog" aria-hidden="true">
