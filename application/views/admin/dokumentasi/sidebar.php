@@ -74,11 +74,11 @@ function generate_submenus($parent_id, $menu_data, $fasyankes_kode)
             // Jika menu type 'content', tampilkan sebagai link biasa
             if ($submenu['menu_type'] == 'content') {
                 if ($submenu['active_st'] == 1) {
-                    $submenu_html .= '<a class="fs-5 dropdown-item" href="' . base_url('admin/dokumentasi/' . $fasyankes_kode . '/' . $submenu['menu_nm']) . '"><span class="fs-5 status status-green">';
+                    $submenu_html .= '<a class="fs-5 dropdown-item" href="' . base_url('admin/dokumentasi/' . $fasyankes_kode . '/' . $submenu['menu_link']) . '"><span class="fs-5 status status-green">';
                     $submenu_html .= $submenu['menu_nm'];
                     $submenu_html .= '</span></a>';
                 } else {
-                    $submenu_html .= '<a class="fs-5 dropdown-item" href="' . base_url('admin/dokumentasi/' . $fasyankes_kode . '/' . $submenu['menu_nm']) . '"><span class="fs-5 status status-red">';
+                    $submenu_html .= '<a class="fs-5 dropdown-item" href="' . base_url('admin/dokumentasi/' . $fasyankes_kode . '/' . $submenu['menu_link']) . '"><span class="fs-5 status status-red">';
                     $submenu_html .= $submenu['menu_nm'];
                     $submenu_html .= '</span></a>';
                 }

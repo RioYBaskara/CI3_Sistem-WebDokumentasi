@@ -100,11 +100,9 @@
                                         echo '<td>' . ($menu['menu_link'] ?: '-') . '</td>';
                                         echo '<td>';
                                         if ($menu['menu_type'] == 'dropdown') {
-                                            echo '<strong><span class="status status-blue status-lite">
-  <span class="status-dot"></span>' . ucfirst($menu['menu_type']) . '<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-select"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 3m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z" /><path d="M9 11l3 3l3 -3" /></svg></span></strong>';
+                                            echo '<strong><span class="status status-blue status-lite"><span class="status-dot"></span>' . ucfirst($menu['menu_type']) . '<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-select"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 3m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z" /><path d="M9 11l3 3l3 -3" /></svg></span></strong>';
                                         } else {
-                                            echo '<span class="status status-yellow status-lite">
-  <span class="status-dot"></span>' . ucfirst($menu['menu_type']) . '<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-bubble-text"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 10h10" /><path d="M9 14h5" /><path d="M12.4 3a5.34 5.34 0 0 1 4.906 3.239a5.333 5.333 0 0 1 -1.195 10.6a4.26 4.26 0 0 1 -5.28 1.863l-3.831 2.298v-3.134a2.668 2.668 0 0 1 -1.795 -3.773a4.8 4.8 0 0 1 2.908 -8.933a5.33 5.33 0 0 1 4.287 -2.16" /></svg></span>';
+                                            echo '<span class="status status-yellow status-lite"><span class="status-dot"></span>' . ucfirst($menu['menu_type']) . '<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-bubble-text"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 10h10" /><path d="M9 14h5" /><path d="M12.4 3a5.34 5.34 0 0 1 4.906 3.239a5.333 5.333 0 0 1 -1.195 10.6a4.26 4.26 0 0 1 -5.28 1.863l-3.831 2.298v-3.134a2.668 2.668 0 0 1 -1.795 -3.773a4.8 4.8 0 0 1 2.908 -8.933a5.33 5.33 0 0 1 4.287 -2.16" /></svg></span>';
                                         }
                                         echo '</td>';
                                         echo '<td><strong>' . $menu['menu_order'] . '</strong></td>';
@@ -164,7 +162,7 @@
                         <div class="col-lg-6">
                             <label class="form-selectgroup-item">
                                 <input type="radio" name="menu_type" value="dropdown" class="form-selectgroup-input"
-                                    <?= (@$main['menu_type'] == 1) ? 'checked' : '' ?>>
+                                    <?= (@$menu['menu_type'] == 1) ? 'checked' : '' ?>>
                                 <span class="p-3 form-selectgroup-label d-flex align-items-center">
                                     <span class="me-3">
                                         <span class="form-selectgroup-check"></span>
@@ -178,7 +176,7 @@
                         <div class="col-lg-6">
                             <label class="form-selectgroup-item">
                                 <input type="radio" name="menu_type" value="content" class="form-selectgroup-input"
-                                    <?= (@$main['menu_type'] == 0) ? 'checked' : '' ?>>
+                                    <?= (@$menu['menu_type'] == 0) ? 'checked' : '' ?>>
                                 <span class="p-3 form-selectgroup-label d-flex align-items-center">
                                     <span class="me-3">
                                         <span class="form-selectgroup-check"></span>
@@ -204,7 +202,7 @@
                         <div class="col-lg-6">
                             <label class="form-selectgroup-item">
                                 <input type="radio" name="active_st" value="1" class="form-selectgroup-input"
-                                    <?= (@$main['active_st'] == 1) ? 'checked' : '' ?>>
+                                    <?= (@$menu['active_st'] == 1) ? 'checked' : '' ?>>
                                 <span class="p-3 form-selectgroup-label d-flex align-items-center">
                                     <span class="me-3">
                                         <span class="form-selectgroup-check"></span>
@@ -218,7 +216,7 @@
                         <div class="col-lg-6">
                             <label class="form-selectgroup-item">
                                 <input type="radio" name="active_st" value="0" class="form-selectgroup-input"
-                                    <?= (@$main['active_st'] == 0) ? 'checked' : '' ?>>
+                                    <?= (@$menu['active_st'] == 0) ? 'checked' : '' ?>>
                                 <span class="p-3 form-selectgroup-label d-flex align-items-center">
                                     <span class="me-3">
                                         <span class="form-selectgroup-check"></span>
@@ -306,7 +304,7 @@
                             <div class="col-lg-6">
                                 <label class="form-selectgroup-item">
                                     <input type="radio" name="menu_type" value="dropdown" class="form-selectgroup-input"
-                                        <?= (@$main['menu_type'] == 1) ? 'checked' : '' ?>>
+                                        <?= (@$menu['menu_type'] == 1) ? 'checked' : '' ?>>
                                     <span class="p-3 form-selectgroup-label d-flex align-items-center">
                                         <span class="me-3">
                                             <span class="form-selectgroup-check"></span>
@@ -320,7 +318,7 @@
                             <div class="col-lg-6">
                                 <label class="form-selectgroup-item">
                                     <input type="radio" name="menu_type" value="content" class="form-selectgroup-input"
-                                        <?= (@$main['menu_type'] == 0) ? 'checked' : '' ?>>
+                                        <?= (@$menu['menu_type'] == 0) ? 'checked' : '' ?>>
                                     <span class="p-3 form-selectgroup-label d-flex align-items-center">
                                         <span class="me-3">
                                             <span class="form-selectgroup-check"></span>
@@ -347,7 +345,7 @@
                             <div class="col-lg-6">
                                 <label class="form-selectgroup-item">
                                     <input type="radio" name="active_st" value="1" class="form-selectgroup-input"
-                                        <?= (@$main['active_st'] == 1) ? 'checked' : '' ?>>
+                                        <?= (@$menu['active_st'] == 1) ? 'checked' : '' ?>>
                                     <span class="p-3 form-selectgroup-label d-flex align-items-center">
                                         <span class="me-3">
                                             <span class="form-selectgroup-check"></span>
@@ -361,7 +359,7 @@
                             <div class="col-lg-6">
                                 <label class="form-selectgroup-item">
                                     <input type="radio" name="active_st" value="0" class="form-selectgroup-input"
-                                        <?= (@$main['active_st'] == 0) ? 'checked' : '' ?>>
+                                        <?= (@$menu['active_st'] == 0) ? 'checked' : '' ?>>
                                     <span class="p-3 form-selectgroup-label d-flex align-items-center">
                                         <span class="me-3">
                                             <span class="form-selectgroup-check"></span>
