@@ -5,6 +5,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 /**
  *  @property session $session 
  *  @property input $input 
+ *  @property form_validation $form_validation 
  *  @property M_User $M_User 
  *  @property M_MenuAdmin $M_MenuAdmin 
  *  @property M_Fasyankes $M_Fasyankes 
@@ -73,6 +74,7 @@ class Admin extends CI_Controller
                 'user_role' => $user['user_role'],
                 'logged_in' => TRUE,
             ]);
+            $this->session->set_flashdata('success', 'Berhasil Login, selamat datang ' . $user['user_nm'] . '!');
             redirect('Admin/dashboard');
         } else {
             $this->session->set_userdata('login_attempts', $attempts + 1);
@@ -115,23 +117,32 @@ class Admin extends CI_Controller
     {
         $this->IsLoggedIn();
 
-        $data = [
-            'fasyankes_kode' => $this->input->post('fasyankes_kode', true),
-            'fasyankes_tipe' => $this->input->post('fasyankes_tipe', true),
-            'fasyankes_nm' => $this->input->post('fasyankes_nm', true),
-            'fasyankes_bpjs_kode' => $this->input->post('fasyankes_bpjs_kode', true),
-            'fasyankes_alamat_lengkap' => $this->input->post('fasyankes_alamat_lengkap', true),
-            'active_st' => $this->input->post('active_st', true),
-            'created_at' => date('Y-m-d H:i:s')
-        ];
+        $this->form_validation->set_rules('fasyankes_kode', 'Kode Fasyankes', 'required');
+        $this->form_validation->set_rules('fasyankes_tipe', 'Tipe Fasyankes', 'required');
+        $this->form_validation->set_rules('fasyankes_nm', 'Nama Fasyankes', 'required');
 
-        if ($this->M_Fasyankes->insertFasyankes($data)) {
-            $this->session->set_flashdata('success', 'Fasyankes berhasil ditambahkan.');
+        if ($this->form_validation->run() == FALSE) {
+            $this->session->set_flashdata('error', validation_errors());
+            redirect('admin/dashboard');
         } else {
-            $this->session->set_flashdata('error', 'Gagal menambahkan fasyankes.');
-        }
+            $data = [
+                'fasyankes_kode' => $this->input->post('fasyankes_kode', true),
+                'fasyankes_tipe' => $this->input->post('fasyankes_tipe', true),
+                'fasyankes_nm' => $this->input->post('fasyankes_nm', true),
+                'fasyankes_bpjs_kode' => $this->input->post('fasyankes_bpjs_kode', true),
+                'fasyankes_alamat_lengkap' => $this->input->post('fasyankes_alamat_lengkap', true),
+                'active_st' => $this->input->post('active_st', true),
+                'created_at' => date('Y-m-d H:i:s')
+            ];
 
-        redirect('admin');
+            if ($this->M_Fasyankes->insertFasyankes($data)) {
+                $this->session->set_flashdata('success', 'Fasyankes berhasil ditambahkan.');
+            } else {
+                $this->session->set_flashdata('error', 'Gagal menambahkan fasyankes.');
+            }
+
+            redirect('admin/dashboard');
+        }
     }
 
     // Method untuk edit data fasyankes
@@ -139,27 +150,37 @@ class Admin extends CI_Controller
     {
         $this->IsLoggedIn();
 
-        $fasyankes_kode = $this->input->post('fasyankes_kode', true);
-        $data = [
-            'fasyankes_tipe' => $this->input->post('fasyankes_tipe', true),
-            'fasyankes_nm' => $this->input->post('fasyankes_nm', true),
-            'fasyankes_bpjs_kode' => $this->input->post('fasyankes_bpjs_kode', true),
-            'fasyankes_alamat_lengkap' => $this->input->post('fasyankes_alamat_lengkap', true),
-            'active_st' => $this->input->post('active_st', true),
-            'deleted_st' => $this->input->post('deleted_st', true) ? $this->input->post('deleted_st', true) : 0,
-            'updated_at' => date('Y-m-d H:i:s')
-        ];
+        $this->form_validation->set_rules('fasyankes_kode', 'Kode Fasyankes', 'required');
+        $this->form_validation->set_rules('fasyankes_tipe', 'Tipe Fasyankes', 'required');
+        $this->form_validation->set_rules('fasyankes_nm', 'Nama Fasyankes', 'required');
 
-        if ($this->M_Fasyankes->updateFasyankes($fasyankes_kode, $data)) {
-            $this->session->set_flashdata('success', 'Fasyankes berhasil diupdate.');
+        if ($this->form_validation->run() == FALSE) {
+            $this->session->set_flashdata('error', validation_errors());
+            redirect('admin/dashboard');
         } else {
-            $this->session->set_flashdata('error', 'Gagal mengupdate fasyankes.');
-        }
+            $fasyankes_kode = $this->input->post('fasyankes_kode', true);
+            $data = [
+                'fasyankes_tipe' => $this->input->post('fasyankes_tipe', true),
+                'fasyankes_nm' => $this->input->post('fasyankes_nm', true),
+                'fasyankes_bpjs_kode' => $this->input->post('fasyankes_bpjs_kode', true),
+                'fasyankes_alamat_lengkap' => $this->input->post('fasyankes_alamat_lengkap', true),
+                'active_st' => $this->input->post('active_st', true),
+                'deleted_st' => $this->input->post('deleted_st', true) ? $this->input->post('deleted_st', true) : 0,
+                'updated_at' => date('Y-m-d H:i:s')
+            ];
 
-        redirect('admin');
+            if ($this->M_Fasyankes->updateFasyankes($fasyankes_kode, $data)) {
+                $this->session->set_flashdata('success', 'Fasyankes berhasil diupdate.');
+            } else {
+                $this->session->set_flashdata('error', 'Gagal mengupdate fasyankes.');
+            }
+
+            redirect('admin/dashboard');
+        }
     }
 
 
+    // halaman dokumentasi
     public function dokumentasi($fasyankes_kode = null, $submenu = null)
     {
         $this->IsLoggedIn();
@@ -202,57 +223,48 @@ class Admin extends CI_Controller
         $this->load->view('admin/dokumentasi/footer', $data);
     }
 
-    private function groupMenuByParent($menu_data)
-    {
-        $grouped_menu = [];
-        foreach ($menu_data as $menu) {
-            if ($menu['menu_parent_id'] == null) {
-                // Jika menu_parent_id null, berarti menu ini adalah root/parent
-                $grouped_menu[$menu['menu_id']] = [
-                    'parent' => $menu,
-                    'children' => []
-                ];
-            } else {
-                // Jika ada parent, kita cari parent-nya
-                if (isset($grouped_menu[$menu['menu_parent_id']])) {
-                    $grouped_menu[$menu['menu_parent_id']]['children'][] = $menu;
-                }
-            }
-        }
-        return $grouped_menu;
-    }
-
     // menu
     // Method untuk menambah menu
     public function addMenu()
     {
         $this->IsLoggedIn();
 
-        $menu_nm = $this->input->post('menu_nm');
-        $menu_type = $this->input->post('menu_type');
-        $menu_link = $this->input->post('menu_link');
-        $fasyankes_kode = $this->input->post('fasyankes_kode');
-        $menu_order = $this->input->post('menu_order');
-        $active_st = $this->input->post('active_st');
+        $this->form_validation->set_rules('menu_nm', 'Nama Menu', 'required');
+        $this->form_validation->set_rules('menu_type', 'Jenis Menu', 'required|in_list[content,dropdown]');
 
-        $data = [
-            'menu_nm' => $menu_nm,
-            'menu_type' => $menu_type,
-            'menu_link' => $menu_link,
-            'fasyankes_kode' => $fasyankes_kode,
-            'menu_order' => $menu_order,
-            'active_st' => $active_st,
-            'created_at' => date('Y-m-d H:i:s'),
-        ];
+        if ($this->form_validation->run() == FALSE) {
+            $this->session->set_flashdata('error', validation_errors());
+            redirect('admin/dokumentasi/' . $this->input->post('fasyankes_kode'));
+        } else {
 
-        // echo '<pre>';
-        // var_dump($data);
-        // echo '</pre>';
-        // die;
+            $menu_nm = $this->input->post('menu_nm', true);
+            $menu_type = $this->input->post('menu_type', true);
+            $menu_link = $this->input->post('menu_link', true);
+            $fasyankes_kode = $this->input->post('fasyankes_kode', true);
+            $menu_order = $this->input->post('menu_order', true);
+            $active_st = $this->input->post('active_st', true);
 
-        $this->M_MenuAdmin->insertMenu($data);
+            $data = [
+                'menu_nm' => $menu_nm,
+                'menu_type' => $menu_type,
+                'menu_link' => $menu_link,
+                'fasyankes_kode' => $fasyankes_kode,
+                'menu_order' => $menu_order,
+                'active_st' => $active_st,
+                'created_at' => date('Y-m-d H:i:s'),
+            ];
 
-        return redirect('admin/dokumentasi/' . $this->input->post('fasyankes_kode'));
+            // echo '<pre>';
+            // var_dump($data);
+            // echo '</pre>';
+            // die;
+
+            $this->M_MenuAdmin->insertMenu($data);
+
+            $this->session->set_flashdata('success', 'Menu berhasil ditambahkan!');
+
+            return redirect('admin/dokumentasi/' . $this->input->post('fasyankes_kode'));
+        }
     }
 
     public function addSubmenu()
@@ -266,14 +278,14 @@ class Admin extends CI_Controller
 
         if ($this->form_validation->run() == FALSE) {
             $this->session->set_flashdata('error', validation_errors());
-            redirect($_SERVER['HTTP_REFERER']);
+            redirect('admin/dokumentasi/' . $this->input->post('fasyankes_kode'));
         } else {
             // Data yang diterima dari form
             $data = [
-                'menu_nm' => $this->input->post('menu_nm'),
-                'menu_type' => $this->input->post('menu_type'),
-                'menu_parent_id' => $this->input->post('menu_parent_id'),
-                'menu_link' => $this->input->post('menu_link') ?: null,
+                'menu_nm' => $this->input->post('menu_nm', true),
+                'menu_type' => $this->input->post('menu_type', true),
+                'menu_parent_id' => $this->input->post('menu_parent_id', true),
+                'menu_link' => $this->input->post('menu_link', true) ?: null,
                 'fasyankes_kode' => $this->input->post('fasyankes_kode', true),
                 'active_st' => 1, // Default aktif
                 'created_at' => date('Y-m-d H:i:s')
@@ -286,7 +298,9 @@ class Admin extends CI_Controller
 
             $this->M_MenuAdmin->insertMenu($data);
 
-            redirect($_SERVER['HTTP_REFERER']);
+            $this->session->set_flashdata('success', 'Submenu berhasil ditambahkan!');
+
+            redirect('admin/dokumentasi/' . $this->input->post('fasyankes_kode'));
         }
     }
 
@@ -305,19 +319,30 @@ class Admin extends CI_Controller
     {
         $this->IsLoggedIn();
 
-        $data = [
-            'menu_id' => $this->input->post('menu_id'),
-            'menu_nm' => $this->input->post('menu_nm'),
-            'menu_type' => $this->input->post('menu_type'),
-            'menu_order' => $this->input->post('menu_order'),
-            'menu_link' => $this->input->post('menu_link'),
-            'active_st' => $this->input->post('active_st'),
-            'updated_at' => date('Y-m-d H:i:s')
-        ];
+        $this->form_validation->set_rules('menu_nm', 'Nama Menu', 'required');
+        $this->form_validation->set_rules('menu_type', 'Jenis Menu', 'required|in_list[content,dropdown]');
 
-        $this->M_MenuAdmin->editMenu($data);
+        if ($this->form_validation->run() == FALSE) {
+            $this->session->set_flashdata('error', validation_errors());
+            redirect('admin/dokumentasi/' . $this->input->post('fasyankes_kode'));
+        } else {
 
-        redirect('admin/dokumentasi/' . $this->input->post('fasyankes_kode'));
+            $data = [
+                'menu_id' => $this->input->post('menu_id', true),
+                'menu_nm' => $this->input->post('menu_nm', true),
+                'menu_type' => $this->input->post('menu_type', true),
+                'menu_order' => $this->input->post('menu_order', true),
+                'menu_link' => $this->input->post('menu_link', true),
+                'active_st' => $this->input->post('active_st', true),
+                'updated_at' => date('Y-m-d H:i:s', true)
+            ];
+
+            $this->M_MenuAdmin->editMenu($data);
+
+            $this->session->set_flashdata('success', 'Submenu berhasil diedit!');
+
+            redirect('admin/dokumentasi/' . $this->input->post('fasyankes_kode'));
+        }
     }
 
     // Method untuk menghapus menu
@@ -328,6 +353,8 @@ class Admin extends CI_Controller
         $this->M_MenuAdmin->deleteMenu($menu_id);
 
         $fasyankes_kode = $this->uri->segment(4);
+
+        $this->session->set_flashdata('success', 'Menu berhasil dihapus!');
 
         redirect('admin/dokumentasi/' . $fasyankes_kode);
     }
