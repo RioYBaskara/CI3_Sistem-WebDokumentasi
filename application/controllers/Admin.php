@@ -234,6 +234,11 @@ class Admin extends CI_Controller
             'menu_url' => $menu_url
         ];
 
+        // echo '<pre>';
+        // var_dump($data['breadcrumb']);
+        // echo '</pre>';
+        // die;
+
         // Load views
         $this->load->view('admin/dokumentasi/header', $data);
         $this->load->view('admin/dokumentasi/sidebar', $data);

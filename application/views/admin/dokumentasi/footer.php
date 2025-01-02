@@ -194,6 +194,21 @@
     });
 </script>
 
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var dropdownItems = document.querySelectorAll('.navbar-nav .nav-item.dropdown');
+
+        dropdownItems.forEach(function (dropdownItem) {
+            dropdownItem.classList.add('show');
+            var dropdownMenu = dropdownItem.querySelector('.dropdown-menu');
+            if (dropdownMenu) {
+                dropdownMenu.classList.add('show');
+            }
+        });
+    });
+</script>
+
 </body>
 
 </html>

@@ -57,10 +57,18 @@
 
         <div class="collapse navbar-collapse fs-5" id="sidebar-menu">
             <ul class="navbar-nav pt-lg-3 fs-5">
-                <?php foreach ($menu_data as $menu): ?>
+                <?php
+                // Variabel untuk menyimpan menu yang sedang aktif
+                $active_menu_ids = array_column($breadcrumb, 'menu_id');
+
+                foreach ($menu_data as $menu):
+                    // Periksa apakah menu adalah parent dan sedang aktif
+                    $is_active = in_array($menu['menu_id'], $active_menu_ids);
+                    ?>
                     <?php if ($menu['menu_parent_id'] == null): ?>
                         <!-- Parent menu -->
-                        <li class="fs-5 nav-item <?= $menu['menu_type'] == 'dropdown' ? 'dropdown' : ''; ?>">
+                        <li
+                            class="fs-5 nav-item <?= $menu['menu_type'] == 'dropdown' ? 'dropdown' : ''; ?> <?= $is_active ? 'active' : ''; ?>">
                             <a class="fs-5 nav-link <?= $menu['menu_type'] == 'dropdown' ? 'dropdown-toggle' : ''; ?>"
                                 href="<?= $menu['menu_type'] == 'content' ? base_url('admin/dokumentasi/' . $fasyankes_kode . '/' . $menu['menu_link']) : '#'; ?>"
                                 data-bs-toggle="<?= $menu['menu_type'] == 'dropdown' ? 'dropdown' : ''; ?>"
@@ -78,7 +86,7 @@
                                         <div class="dropdown-menu-column fs-5">
                                             <?php
                                             // Call the recursive function for child menus
-                                            echo generate_submenus($menu['menu_id'], $menu_data, $fasyankes_kode);
+                                            echo generate_submenus($menu['menu_id'], $menu_data, $fasyankes_kode, $active_menu_ids);
                                             ?>
                                         </div>
                                     </div>
@@ -121,13 +129,13 @@ function generate_submenus($parent_id, $menu_data, $fasyankes_kode)
                     $submenu_html .= '<a class="fs-5 dropdown-item dropdown-toggle" href="#" data-bs-toggle="dropdown" data-bs-auto-close="false"><span class="fs-5 status status-green">';
                     $submenu_html .= $submenu['menu_nm'];
                     $submenu_html .= '</span></a>';
-                    $submenu_html .= '<div class="dropdown-menu">';
+                    $submenu_html .= '<div class="dropdown-menu show">';
                 } else {
                     $submenu_html .= '<div class="dropend">';
                     $submenu_html .= '<a class="fs-5 dropdown-item dropdown-toggle" href="#" data-bs-toggle="dropdown" data-bs-auto-close="false"><span class="fs-5 status status-red">';
                     $submenu_html .= $submenu['menu_nm'];
                     $submenu_html .= '</span></a>';
-                    $submenu_html .= '<div class="dropdown-menu">';
+                    $submenu_html .= '<div class="dropdown-menu show">';
                 }
                 // Panggil fungsi ini lagi untuk submenu-nya (rekursif)
                 $submenu_html .= generate_submenus($submenu['menu_id'], $menu_data, $fasyankes_kode);
