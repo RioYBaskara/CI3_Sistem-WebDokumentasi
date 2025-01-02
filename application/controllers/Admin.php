@@ -7,6 +7,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
  *  @property input $input 
  *  @property form_validation $form_validation 
  *  @property M_User $M_User 
+ *  @property M_Content $M_Content 
  *  @property M_MenuAdmin $M_MenuAdmin 
  *  @property M_Fasyankes $M_Fasyankes 
  */
@@ -181,7 +182,7 @@ class Admin extends CI_Controller
 
 
     // halaman dokumentasi
-    public function dokumentasi($fasyankes_kode = null, $submenu = null)
+    public function dokumentasi($fasyankes_kode = null, $menu_url = null)
     {
         $this->IsLoggedIn();
 
@@ -192,27 +193,46 @@ class Admin extends CI_Controller
         }
 
         // Ambil data menu berdasarkan fasyankes_kode
-        $this->load->model('M_MenuAdmin');
         $menu_data = $this->M_MenuAdmin->getMenuByFasyankesKode($fasyankes_kode);
 
-        // Jika ada submenu, ambil konten submenu
+        // Jika $menu_url kosong, arahkan ke menu pertama berdasarkan urutan
+        if ($menu_url == null) {
+            // Cari menu pertama berdasarkan urutan
+            $first_menu = $this->M_MenuAdmin->getFirstMenuByFasyankesKode($fasyankes_kode);
+
+            if ($first_menu) {
+                // Redirect ke menu pertama
+                redirect('admin/dokumentasi/' . $fasyankes_kode . '/' . $first_menu['menu_link']);
+            }
+        }
+
+        // Ambil data menu berdasarkan fasyankes_kode
+        $menu_data = $this->M_MenuAdmin->getMenuByFasyankesKode($fasyankes_kode);
+
+        // get konten dand detail by menu_url
         $content_data = null;
-        if ($submenu != null) {
-            $content_data = $this->M_MenuAdmin->getContentBySubmenu($submenu, $fasyankes_kode);
+        $menu_detail = null;
+        $breadcrumb = [];
+
+        if ($menu_url != null) {
+            $menu_detail = $this->M_MenuAdmin->getMenuByUrl($menu_url, $fasyankes_kode);
+
+            if ($menu_detail) {
+                $content_data = $this->M_Content->getContentByMenuId($menu_detail['menu_id']);
+                $breadcrumb = $this->M_MenuAdmin->getMenuBreadcrumb($menu_detail['menu_id']);
+            }
         }
 
         // Menyiapkan data untuk view
         $data = [
             'menu_data' => $menu_data,
             'content_data' => $content_data,
+            'menu_detail' => $menu_detail,
+            'breadcrumb' => $breadcrumb,
             'user_role' => $this->session->userdata('user_role'),
-            'fasyankes_kode' => $fasyankes_kode
+            'fasyankes_kode' => $fasyankes_kode,
+            'menu_url' => $menu_url
         ];
-
-        // echo '<pre>';
-        // var_dump($menu_data);
-        // echo '</pre>';
-        // die;
 
         // Load views
         $this->load->view('admin/dokumentasi/header', $data);
@@ -222,6 +242,39 @@ class Admin extends CI_Controller
         $this->load->view('admin/dokumentasi/modal', $data);
         $this->load->view('admin/dokumentasi/footer', $data);
     }
+
+    // content
+    public function saveContent()
+    {
+        $this->IsLoggedIn();
+
+        $content_id = $this->input->post('content_id');
+        $menu_id = $this->input->post('menu_id');
+        $content_body = $this->input->post('content_body');
+
+        if (empty($content_id)) {
+            $result = $this->M_Content->insertContent([
+                'menu_id' => $menu_id,
+                'content_body' => $content_body,
+                'created_at' => date('Y-m-d H:i:s')
+            ]);
+        } else {
+            $result = $this->M_Content->updateContent($content_id, [
+                'content_body' => $content_body,
+                'updated_at' => date('Y-m-d H:i:s')
+            ]);
+        }
+
+        if ($result) {
+            $this->session->set_flashdata('success', 'Konten berhasil disimpan.');
+        } else {
+            $this->session->set_flashdata('error', 'Gagal menyimpan konten.');
+        }
+
+        redirect($_SERVER['HTTP_REFERER']);
+    }
+
+
 
     // menu
     // Method untuk menambah menu
@@ -239,7 +292,7 @@ class Admin extends CI_Controller
 
             $menu_nm = $this->input->post('menu_nm', true);
             $menu_type = $this->input->post('menu_type', true);
-            $menu_link = $this->input->post('menu_link', true);
+            $menu_link = $this->input->post('menu_link', true) ?: '#';
             $fasyankes_kode = $this->input->post('fasyankes_kode', true);
             $menu_order = $this->input->post('menu_order', true);
             $active_st = $this->input->post('active_st', true);
@@ -285,7 +338,7 @@ class Admin extends CI_Controller
                 'menu_nm' => $this->input->post('menu_nm', true),
                 'menu_type' => $this->input->post('menu_type', true),
                 'menu_parent_id' => $this->input->post('menu_parent_id', true),
-                'menu_link' => $this->input->post('menu_link', true) ?: null,
+                'menu_link' => $this->input->post('menu_link', true) ?: '#',
                 'fasyankes_kode' => $this->input->post('fasyankes_kode', true),
                 'active_st' => 1, // Default aktif
                 'created_at' => date('Y-m-d H:i:s')
@@ -332,14 +385,14 @@ class Admin extends CI_Controller
                 'menu_nm' => $this->input->post('menu_nm', true),
                 'menu_type' => $this->input->post('menu_type', true),
                 'menu_order' => $this->input->post('menu_order', true),
-                'menu_link' => $this->input->post('menu_link', true),
+                'menu_link' => $this->input->post('menu_link', true) ?: '#',
                 'active_st' => $this->input->post('active_st', true),
                 'updated_at' => date('Y-m-d H:i:s', true)
             ];
 
             $this->M_MenuAdmin->editMenu($data);
 
-            $this->session->set_flashdata('success', 'Submenu berhasil diedit!');
+            $this->session->set_flashdata('success', 'Menu berhasil diedit!');
 
             redirect('admin/dokumentasi/' . $this->input->post('fasyankes_kode'));
         }

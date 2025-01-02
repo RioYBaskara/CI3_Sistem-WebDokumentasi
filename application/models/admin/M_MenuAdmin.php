@@ -34,18 +34,51 @@ class M_MenuAdmin extends CI_Model
         return $result;
     }
 
-    // Mengambil konten berdasarkan submenu dan fasyankes_kode
-    public function getContentBySubmenu($submenu, $fasyankes_kode)
+    public function getMenuByUrl($menu_url, $fasyankes_kode)
     {
-        $this->db->select('content_body');
-        $this->db->from('content');
-        $this->db->join('menu', 'menu.menu_id = content.menu_id');
-        $this->db->where('menu.menu_nm', $submenu);
-        $this->db->where('menu.fasyankes_kode', $fasyankes_kode);
-        $this->db->where('menu.active_st', 1);
+        $this->db->select('*');
+        $this->db->from('menu');
+        $this->db->where('menu_link', $menu_url);
+        $this->db->where('fasyankes_kode', $fasyankes_kode);
         $query = $this->db->get();
+
         return $query->row_array();
     }
+
+    public function getMenuBreadcrumb($menu_id)
+    {
+        $breadcrumb = [];
+        while ($menu_id) {
+            $this->db->select('menu_id, menu_nm, menu_link, menu_parent_id');
+            $this->db->from('menu');
+            $this->db->where('menu_id', $menu_id);
+            $menu = $this->db->get()->row_array();
+
+            if ($menu) {
+                $breadcrumb[] = $menu;
+                $menu_id = $menu['menu_parent_id'];
+            } else {
+                break;
+            }
+        }
+
+        // Urutkan breadcrumb dari root ke child
+        return array_reverse($breadcrumb);
+    }
+
+    public function getFirstMenuByFasyankesKode($fasyankes_kode)
+    {
+        // Ambil menu pertama berdasarkan fasyankes_kode dan urutan menu
+        $this->db->select('*');
+        $this->db->from('menu');
+        $this->db->where('fasyankes_kode', $fasyankes_kode);
+        $this->db->order_by('menu_order', 'ASC'); // Mengurutkan berdasarkan menu_order
+        $this->db->limit(1); // Ambil hanya 1 menu pertama
+
+        $query = $this->db->get();
+        return $query->row_array(); // Mengembalikan data menu pertama
+    }
+
 
     // Method untuk menambah menu
     public function insertMenu($data)

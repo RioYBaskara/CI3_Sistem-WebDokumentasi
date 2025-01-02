@@ -66,7 +66,7 @@
             <div class="modal-body table-responsive">
                 <div class="mb-3">
                     <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addMenuModal">
-                        Tambah Menu
+                        Tambah Menu Parent Root
                     </button>
                 </div>
                 <table class="table table-striped table-responsive">
@@ -75,7 +75,7 @@
                             <th>#</th>
                             <th>Nama Parent</th>
                             <th>Nama Menu</th>
-                            <th>Link</th>
+                            <th>Link Content</th>
                             <th>Jenis</th>
                             <th>Urutan</th>
                             <th>Aksi</th>
@@ -158,11 +158,11 @@
                     </div>
 
                     <label class="form-label">Jenis Menu</label>
-                    <div class="mb-3 form-selectgroup-boxes row">
+                    <div class="mb-3 form-selectgroup-boxes row" id="menuTypeGroup">
                         <div class="col-lg-6">
                             <label class="form-selectgroup-item">
                                 <input type="radio" name="menu_type" value="dropdown" class="form-selectgroup-input"
-                                    <?= (@$menu['menu_type'] == 1) ? 'checked' : '' ?>>
+                                    <?= (@$menu['menu_type'] == 'dropdown') ? 'checked' : '' ?> id="menuTypeDropdown">
                                 <span class="p-3 form-selectgroup-label d-flex align-items-center">
                                     <span class="me-3">
                                         <span class="form-selectgroup-check"></span>
@@ -176,7 +176,7 @@
                         <div class="col-lg-6">
                             <label class="form-selectgroup-item">
                                 <input type="radio" name="menu_type" value="content" class="form-selectgroup-input"
-                                    <?= (@$menu['menu_type'] == 0) ? 'checked' : '' ?>>
+                                    <?= (@$menu['menu_type'] == 'content') ? 'checked' : '' ?> id="menuTypeContent">
                                 <span class="p-3 form-selectgroup-label d-flex align-items-center">
                                     <span class="me-3">
                                         <span class="form-selectgroup-check"></span>
@@ -189,10 +189,12 @@
                         </div>
                     </div>
 
-                    <div class="mb-3">
-                        <label for="menu_link" class="form-label">Link (Opsional)</label>
-                        <input type="text" class="form-control" name="menu_link">
+                    <!-- Field "Link" -->
+                    <div class="mb-3" id="menuLinkField">
+                        <label for="menu_link" class="form-label">Link Content</label>
+                        <input type="text" class="form-control" name="menu_link" id="menuLink">
                     </div>
+
                     <div class="mb-3">
                         <label for="menu_order" class="form-label">Urutan</label>
                         <input type="number" class="form-control" name="menu_order" required>
@@ -254,19 +256,22 @@
                     <div class="modal-body">
                         <input type="hidden" name="menu_parent_id" value="<?php echo $menu['menu_id']; ?>">
                         <div class="mb-3">
-                            <label for="menu_nm" class="form-label">Nama Submenu</label>
-                            <input type="text" class="form-control" id="menu_nm" name="menu_nm" required>
+                            <label for="menu_nm_<?php echo $menu['menu_id']; ?>" class="form-label">Nama Submenu</label>
+                            <input type="text" class="form-control" id="menu_nm_<?php echo $menu['menu_id']; ?>"
+                                name="menu_nm" required>
                         </div>
                         <div class="mb-3">
-                            <label for="menu_link" class="form-label">Link</label>
-                            <input type="text" class="form-control" id="menu_link" name="menu_link">
-                        </div>
-                        <div class="mb-3">
-                            <label for="menu_type" class="form-label">Jenis</label>
-                            <select class="form-select" id="menu_type" name="menu_type">
+                            <label for="menu_type_<?php echo $menu['menu_id']; ?>" class="form-label">Jenis</label>
+                            <select class="form-select menu-type-selector" id="menu_type_<?php echo $menu['menu_id']; ?>"
+                                name="menu_type" data-menu-id="<?php echo $menu['menu_id']; ?>">
                                 <option value="content">Content</option>
                                 <option value="dropdown">Dropdown</option>
                             </select>
+                        </div>
+                        <div class="mb-3 submenu-link-container" id="menu_link_container_<?php echo $menu['menu_id']; ?>">
+                            <label for="menu_link_<?php echo $menu['menu_id']; ?>" class="form-label">Link Content</label>
+                            <input type="text" class="form-control" id="menu_link_<?php echo $menu['menu_id']; ?>"
+                                name="menu_link">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -289,22 +294,23 @@
                 <form action="<?= base_url('admin/editMenu'); ?>" method="POST">
                     <input type="hidden" name="fasyankes_kode" value="<?= $this->uri->segment(3); ?>">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="editMenuModalLabel_<?= $menu['menu_id']; ?>">Edit Menu</h5>
+                        <h5 class="modal-title" id="editMenuModalLabel_<?= $menu['menu_id']; ?>">Edit Menu
+                            "<?= $menu['menu_nm'] ?>"</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <input type="hidden" name="menu_id" value="<?= $menu['menu_id']; ?>">
                         <div class="mb-3">
-                            <label for="menu_nm" class="form-label">Nama Menu</label>
-                            <input type="text" name="menu_nm" id="menu_nm" class="form-control"
+                            <label for="menu_nm_<?= $menu['menu_id']; ?>" class="form-label">Nama Menu</label>
+                            <input type="text" name="menu_nm" id="menu_nm_<?= $menu['menu_id']; ?>" class="form-control"
                                 value="<?= $menu['menu_nm']; ?>" required>
                         </div>
                         <label class="form-label">Jenis Menu</label>
                         <div class="mb-3 form-selectgroup-boxes row">
                             <div class="col-lg-6">
                                 <label class="form-selectgroup-item">
-                                    <input type="radio" name="menu_type" value="dropdown" class="form-selectgroup-input"
-                                        <?= (@$menu['menu_type'] == 1) ? 'checked' : '' ?>>
+                                    <input type="radio" name="menu_type" value="dropdown" class="form-selectgroup-input menu-type"
+                                        data-menu-id="<?= $menu['menu_id']; ?>" <?= ($menu['menu_type'] === 'dropdown') ? 'checked' : '' ?>>
                                     <span class="p-3 form-selectgroup-label d-flex align-items-center">
                                         <span class="me-3">
                                             <span class="form-selectgroup-check"></span>
@@ -317,8 +323,8 @@
                             </div>
                             <div class="col-lg-6">
                                 <label class="form-selectgroup-item">
-                                    <input type="radio" name="menu_type" value="content" class="form-selectgroup-input"
-                                        <?= (@$menu['menu_type'] == 0) ? 'checked' : '' ?>>
+                                    <input type="radio" name="menu_type" value="content" class="form-selectgroup-input menu-type"
+                                        data-menu-id="<?= $menu['menu_id']; ?>" <?= ($menu['menu_type'] === 'content') ? 'checked' : '' ?>>
                                     <span class="p-3 form-selectgroup-label d-flex align-items-center">
                                         <span class="me-3">
                                             <span class="form-selectgroup-check"></span>
@@ -330,14 +336,14 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="menu_link" class="form-label">Link (Opsional untuk Content)</label>
-                            <input type="text" name="menu_link" id="menu_link" class="form-control"
+                        <div class="mb-3" id="menuLinkField_<?= $menu['menu_id']; ?>" style="display: <?= ($menu['menu_type'] === 'content') ? 'block' : 'none'; ?>">
+                            <label for="menu_link_<?= $menu['menu_id']; ?>" class="form-label">Link Content</label>
+                            <input type="text" name="menu_link" id="menu_link_<?= $menu['menu_id']; ?>" class="form-control"
                                 value="<?= $menu['menu_link']; ?>">
                         </div>
                         <div class="mb-3">
-                            <label for="menu_order" class="form-label">Urutan Menu</label>
-                            <input type="number" name="menu_order" id="menu_order" class="form-control"
+                            <label for="menu_order_<?= $menu['menu_id']; ?>" class="form-label">Urutan Menu</label>
+                            <input type="number" name="menu_order" id="menu_order_<?= $menu['menu_id']; ?>" class="form-control"
                                 value="<?= $menu['menu_order']; ?>" required>
                         </div>
                         <label class="form-label">Active?</label>
@@ -345,7 +351,7 @@
                             <div class="col-lg-6">
                                 <label class="form-selectgroup-item">
                                     <input type="radio" name="active_st" value="1" class="form-selectgroup-input"
-                                        <?= (@$menu['active_st'] == 1) ? 'checked' : '' ?>>
+                                        <?= ($menu['active_st'] == 1) ? 'checked' : '' ?>>
                                     <span class="p-3 form-selectgroup-label d-flex align-items-center">
                                         <span class="me-3">
                                             <span class="form-selectgroup-check"></span>
@@ -359,7 +365,7 @@
                             <div class="col-lg-6">
                                 <label class="form-selectgroup-item">
                                     <input type="radio" name="active_st" value="0" class="form-selectgroup-input"
-                                        <?= (@$menu['active_st'] == 0) ? 'checked' : '' ?>>
+                                        <?= ($menu['active_st'] == 0) ? 'checked' : '' ?>>
                                     <span class="p-3 form-selectgroup-label d-flex align-items-center">
                                         <span class="me-3">
                                             <span class="form-selectgroup-check"></span>
@@ -381,6 +387,29 @@
         </div>
     </div>
 <?php endforeach; ?>
+
+<!-- konten -->
+<div class="modal fade modal-blur" id="contentModal" tabindex="-1" aria-labelledby="contentModal" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <form action="<?= base_url('admin/saveContent') ?>" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="contentModalLabel">Edit Konten</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="content_id" id="content_id">
+                    <input type="hidden" name="menu_id" id="menu_id">
+                    <textarea id="tinymce-default" name="content_body"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <?php if ($this->session->flashdata('success')): ?>
     <div class="alert alert-blur alert-success alert-dismissible position-fixed"

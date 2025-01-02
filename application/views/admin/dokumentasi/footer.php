@@ -92,9 +92,108 @@
                 }
             });
         });
+
+        // Hide or show the "Link" field based on the selected menu type
+        function toggleMenuLinkField() {
+            if ($('input[name="menu_type"]:checked').val() === 'content') {
+                $('#menuLinkField').show();
+                $('#menuLink').prop('required', true); // Make it required
+            } else {
+                $('#menuLinkField').hide();
+                $('#menuLink').prop('required', false); // Remove required
+            }
+        }
+
+        // Check initial state when modal is opened
+        toggleMenuLinkField();
+
+        // Add change event listener to the radio buttons
+        $('input[name="menu_type"]').change(function () {
+            toggleMenuLinkField();
+        });
     });
 
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/libs/tinymce/tinymce.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let options = {
+            selector: '#tinymce-default',
+            height: 300,
+            menubar: false,
+            statusbar: false,
+            plugins: [
+                'advlist autolink lists link image charmap print preview anchor',
+                'searchreplace visualblocks code fullscreen',
+                'insertdatetime media table paste code help wordcount'
+            ],
+            toolbar: 'undo redo | formatselect | ' +
+                'bold italic backcolor | alignleft aligncenter ' +
+                'alignright alignjustify | bullist numlist outdent indent | ' +
+                'removeformat',
+            content_style: 'body { font-family: -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif; font-size: 14px; -webkit-font-smoothing: antialiased; }'
+        }
+        if (localStorage.getItem("tablerTheme") === 'dark') {
+            options.skin = 'oxide-dark';
+            options.content_css = 'dark';
+        }
+        tinyMCE.init(options);
+    })
+</script>
+
+<script>
+    document.querySelectorAll('[data-bs-target="#contentModal"]').forEach(button => {
+        button.addEventListener('click', function () {
+            const menuId = this.getAttribute('data-menu-id');
+            const contentId = this.getAttribute('data-content-id');
+            const contentBody = this.getAttribute('data-content-body');
+
+            document.querySelector('#content_id').value = contentId || '';
+            document.querySelector('#menu_id').value = menuId || '';
+            tinymce.get('tinymce-default').setContent(contentBody || '');
+        });
+    });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Untuk setiap selector jenis menu, tambahkan event listener
+        document.querySelectorAll('.menu-type-selector').forEach(function (selector) {
+            selector.addEventListener('change', function () {
+                let menuId = this.getAttribute('data-menu-id');
+                let selectedValue = this.value;
+                let linkContainer = document.getElementById('menu_link_container_' + menuId);
+
+                // Tampilkan atau sembunyikan input link berdasarkan jenis menu
+                if (selectedValue === 'content') {
+                    linkContainer.style.display = 'block';
+                } else {
+                    linkContainer.style.display = 'none';
+                }
+            });
+
+            // Trigger perubahan awal untuk menyesuaikan tampilan berdasarkan default value
+            selector.dispatchEvent(new Event('change'));
+        });
+
+    });
+</script>
+
+<script>
+    document.querySelectorAll('.menu-type').forEach(function (radio) {
+        radio.addEventListener('change', function () {
+            const menuId = this.getAttribute('data-menu-id');
+            const menuLinkField = document.getElementById(`menuLinkField_${menuId}`);
+            if (this.value === 'content') {
+                menuLinkField.style.display = 'block';
+            } else {
+                menuLinkField.style.display = 'none';
+            }
+        });
+    });
+</script>
+
 </body>
 
 </html>

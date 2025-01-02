@@ -205,7 +205,7 @@
                         <!-- Looping data fasyankes -->
                         <?php foreach ($fasyankes as $main): ?>
                             <div class="col-sm-6 col-lg-4" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                title="Klik untuk edit">
+                                title="Klik untuk edit atau ke halaman dokumentasi">
                                 <a style="cursor: pointer" class="card" data-bs-toggle="modal"
                                     data-bs-target="#modal-edit-fasyankes-<?= $main['fasyankes_kode'] ?>">
                                     <div class="card-body w-100 h-100 justify-content-between">
