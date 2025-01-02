@@ -151,12 +151,18 @@
                             method: 'POST',
                             body: formData
                         })
-                            .then(response => response.json())
+                            .then(response => response.text())
                             .then(data => {
-                                if (data.success) {
-                                    callback(data.image_url);
-                                } else {
-                                    alert('Upload gagal: ' + data.message);
+                                console.log(data);
+                                try {
+                                    const jsonData = JSON.parse(data);
+                                    if (jsonData.success) {
+                                        callback(jsonData.image_url);
+                                    } else {
+                                        alert('Upload gagal: ' + jsonData.message);
+                                    }
+                                } catch (error) {
+                                    alert('Error parsing JSON: ' + error.message);
                                 }
                             })
                             .catch(error => alert('Error: ' + error));

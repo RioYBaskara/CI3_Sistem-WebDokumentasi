@@ -6,6 +6,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
  *  @property session $session 
  *  @property input $input 
  *  @property form_validation $form_validation 
+ *  @property upload $upload 
+ *  @property uri $uri 
  *  @property M_User $M_User 
  *  @property M_Content $M_Content 
  *  @property M_MenuAdmin $M_MenuAdmin 
@@ -281,22 +283,22 @@ class Admin extends CI_Controller
 
     public function upload_image()
     {
-        // Konfigurasi upload gambar
+        $this->load->helper('url');
+        $this->load->library('upload');
+
         $config['upload_path'] = './assets/img/content/';
-        $config['allowed_types'] = 'gif|jpg|png|jpeg';
-        $config['max_size'] = 2048;  // Maksimal 2MB
-        $config['file_name'] = time() . '-' . $_FILES['file']['name'];
+        $config['allowed_types'] = 'jpg|jpeg|png|gif';
+        $config['max_size'] = 2048;
+        $config['file_name'] = uniqid();
 
         $this->upload->initialize($config);
 
-        if (!$this->upload->do_upload('file')) {
-            // Jika upload gagal
-            echo json_encode(['success' => false, 'error' => $this->upload->display_errors()]);
-        } else {
-            // Jika upload berhasil
-            $upload_data = $this->upload->data();
-            $image_url = base_url('assets/img/content/' . $upload_data['file_name']);
+        if ($this->upload->do_upload('file')) {
+            $file_data = $this->upload->data();
+            $image_url = base_url('assets/img/content/' . $file_data['file_name']);
             echo json_encode(['success' => true, 'image_url' => $image_url]);
+        } else {
+            echo json_encode(['success' => false, 'message' => $this->upload->display_errors()]);
         }
     }
 
