@@ -16,6 +16,11 @@ user_guide_src/cilexer/build/*
 user_guide_src/cilexer/dist/*
 user_guide_src/cilexer/pycilexer.egg-info/*
 /vendor/
+# exclude everything
+/assets/img/content/*
+
+# exception to the rule
+/assets/img/content/.gitkeep 
 
 # IDE Files
 #-------------------------

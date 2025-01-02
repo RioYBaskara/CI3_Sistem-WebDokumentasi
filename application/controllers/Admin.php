@@ -279,7 +279,26 @@ class Admin extends CI_Controller
         redirect($_SERVER['HTTP_REFERER']);
     }
 
+    public function upload_image()
+    {
+        // Konfigurasi upload gambar
+        $config['upload_path'] = './assets/img/content/';
+        $config['allowed_types'] = 'gif|jpg|png|jpeg';
+        $config['max_size'] = 2048;  // Maksimal 2MB
+        $config['file_name'] = time() . '-' . $_FILES['file']['name'];
 
+        $this->upload->initialize($config);
+
+        if (!$this->upload->do_upload('file')) {
+            // Jika upload gagal
+            echo json_encode(['success' => false, 'error' => $this->upload->display_errors()]);
+        } else {
+            // Jika upload berhasil
+            $upload_data = $this->upload->data();
+            $image_url = base_url('assets/img/content/' . $upload_data['file_name']);
+            echo json_encode(['success' => true, 'image_url' => $image_url]);
+        }
+    }
 
     // menu
     // Method untuk menambah menu

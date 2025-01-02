@@ -115,31 +115,69 @@
 
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/libs/tinymce/tinymce.min.js" defer></script>
+<!-- Include TinyMCE script -->
+<script src="<?= base_url('assets/js/tinymce/tinymce.min.js'); ?>"></script>
+
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         let options = {
             selector: '#tinymce-default',
-            height: 300,
-            menubar: false,
-            statusbar: false,
+            license_key: 'gpl',
+            height: 600,
+            menubar: true,
+            statusbar: true,
             plugins: [
-                'advlist autolink lists link image charmap print preview anchor',
-                'searchreplace visualblocks code fullscreen',
-                'insertdatetime media table paste code help wordcount'
+                "image", "code", "table", "link", "media", "codesample",
+                "advlist", "autolink", "lists", "charmap", "print", "preview", "anchor",
+                "searchreplace", "visualblocks", "fullscreen", "insertdatetime", "paste", "help", "wordcount"
             ],
-            toolbar: 'undo redo | formatselect | ' +
-                'bold italic backcolor | alignleft aligncenter ' +
-                'alignright alignjustify | bullist numlist outdent indent | ' +
-                'removeformat',
+            toolbar: 'undo redo | formatselect | bold italic backcolor | ' +
+                'alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | ' +
+                'removeformat | link image',
+            file_picker_types: 'image',
+            file_picker_callback: function (callback, value, meta) {
+                if (meta.filetype === 'image') {
+                    var input = document.createElement('input');
+                    input.setAttribute('type', 'file');
+                    input.setAttribute('accept', 'image/*');
+                    input.click();
+
+                    input.onchange = function () {
+                        var file = input.files[0];
+                        var formData = new FormData();
+                        formData.append('file', file);
+
+                        fetch('<?= base_url("admin/upload_image"); ?>', {
+                            method: 'POST',
+                            body: formData
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    callback(data.image_url);
+                                } else {
+                                    alert('Upload gagal: ' + data.message);
+                                }
+                            })
+                            .catch(error => alert('Error: ' + error));
+                    }
+                }
+            },
             content_style: 'body { font-family: -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif; font-size: 14px; -webkit-font-smoothing: antialiased; }'
-        }
+        };
         if (localStorage.getItem("tablerTheme") === 'dark') {
             options.skin = 'oxide-dark';
             options.content_css = 'dark';
         }
+
         tinyMCE.init(options);
-    })
+        document.addEventListener('focusin', (e) => {
+            if (e.target.closest(".tox-tinymce-aux, .moxman-window, .tam-assetmanager-root") !== null) {
+                e.stopImmediatePropagation();
+            }
+        });
+
+    });
 </script>
 
 <script>
