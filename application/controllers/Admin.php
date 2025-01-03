@@ -120,9 +120,13 @@ class Admin extends CI_Controller
     {
         $this->IsLoggedIn();
 
-        $this->form_validation->set_rules('fasyankes_kode', 'Kode Fasyankes', 'required');
-        $this->form_validation->set_rules('fasyankes_tipe', 'Tipe Fasyankes', 'required');
-        $this->form_validation->set_rules('fasyankes_nm', 'Nama Fasyankes', 'required');
+        $this->form_validation->set_rules('fasyankes_kode', 'Kode Fasyankes', 'required|trim|is_unique[fasyankes.fasyankes_kode]', [
+            'is_unique' => 'Kode Fasyankes telah terdaftar, Buat Kode Fasyankes yang berbeda!'
+        ]);
+        $this->form_validation->set_rules('fasyankes_tipe', 'Tipe Fasyankes', 'required|trim');
+        $this->form_validation->set_rules('fasyankes_nm', 'Nama Fasyankes', 'required|trim|is_unique[fasyankes.fasyankes_nm]', [
+            'is_unique' => 'Nama Fasyankes telah terdaftar, Buat Nama Fasyankes yang berbeda!'
+        ]);
 
         if ($this->form_validation->run() == FALSE) {
             $this->session->set_flashdata('error', validation_errors());
@@ -153,9 +157,30 @@ class Admin extends CI_Controller
     {
         $this->IsLoggedIn();
 
-        $this->form_validation->set_rules('fasyankes_kode', 'Kode Fasyankes', 'required');
+
+        $current_fasyankes_kode = $this->input->post('current_fasyankes_kode');
+        $new_fasyankes_kode = $this->input->post('fasyankes_kode');
+
+        if ($new_fasyankes_kode != $current_fasyankes_kode) {
+            $this->form_validation->set_rules('fasyankes_kode', 'Kode Fasyankes', 'required|trim|is_unique[menu.fasyankes_kode]', [
+                'is_unique' => 'Kode Fasyankes telah terdaftar, edit Kode Fasyankes yang berbeda!'
+            ]);
+        } else {
+            $this->form_validation->set_rules('fasyankes_kode', 'Kode Fasyankes', 'required|trim');
+        }
+
+        $current_fasyankes_nm = $this->input->post('current_fasyankes_nm');
+        $new_fasyankes_nm = $this->input->post('fasyankes_nm');
+
+        if ($new_fasyankes_nm != $current_fasyankes_nm) {
+            $this->form_validation->set_rules('fasyankes_nm', 'Nama Fasyankes', 'required|trim|is_unique[menu.fasyankes_nm]', [
+                'is_unique' => 'Nama Fasyankes telah terdaftar, edit Nama Fasyankes yang berbeda!'
+            ]);
+        } else {
+            $this->form_validation->set_rules('fasyankes_nm', 'Nama Fasyankes', 'required|trim');
+        }
+
         $this->form_validation->set_rules('fasyankes_tipe', 'Tipe Fasyankes', 'required');
-        $this->form_validation->set_rules('fasyankes_nm', 'Nama Fasyankes', 'required');
 
         if ($this->form_validation->run() == FALSE) {
             $this->session->set_flashdata('error', validation_errors());
@@ -308,10 +333,12 @@ class Admin extends CI_Controller
     {
         $this->IsLoggedIn();
 
+        $fasyankes_kode = $this->input->post('fasyankes_kode', true);
+
         $this->form_validation->set_rules('menu_nm', 'Nama Menu', 'required');
         $this->form_validation->set_rules('menu_type', 'Jenis Menu', 'required|in_list[content,dropdown]');
-        $this->form_validation->set_rules('menu_link', 'Link', 'trim|is_unique[menu.menu_link]', [
-            'is_unique' => 'Link telah terdaftar, buat link dengan nama berbeda!'
+        $this->form_validation->set_rules('menu_link', 'Link', 'trim|callback_check_unique_link[' . $fasyankes_kode . ']', [
+            'check_unique_link' => 'Link telah terdaftar untuk Fasyankes ini, buat link dengan nama berbeda!'
         ]);
 
         if ($this->form_validation->run() == FALSE) {
@@ -353,12 +380,15 @@ class Admin extends CI_Controller
     {
         $this->IsLoggedIn();
 
-        // Validasi input dari form
+        // validasi
+        $fasyankes_kode = $this->input->post('fasyankes_kode', true);
+
         $this->form_validation->set_rules('menu_nm', 'Nama Menu', 'required');
         $this->form_validation->set_rules('menu_type', 'Jenis Menu', 'required|in_list[content,dropdown]');
         $this->form_validation->set_rules('menu_parent_id', 'Parent Menu', 'required|integer');
-        $this->form_validation->set_rules('menu_link', 'Link', 'trim|is_unique[menu.menu_link]', [
-            'is_unique' => 'Link telah terdaftar, buat link dengan nama berbeda!'
+
+        $this->form_validation->set_rules('menu_link', 'Link', 'trim|callback_check_unique_link[' . $fasyankes_kode . ']', [
+            'check_unique_link' => 'Link telah terdaftar untuk Fasyankes ini, buat link dengan nama berbeda!'
         ]);
 
         if ($this->form_validation->run() == FALSE) {
@@ -376,17 +406,25 @@ class Admin extends CI_Controller
                 'created_at' => date('Y-m-d H:i:s')
             ];
 
-            // echo '<pre>';
-            // var_dump($data);
-            // echo '</pre>';
-            // die;
-
             $this->M_MenuAdmin->insertMenu($data);
 
             $this->session->set_flashdata('success', 'Submenu berhasil ditambahkan!');
 
             redirect($this->input->post('redirect_url'));
         }
+    }
+
+    public function check_unique_link($menu_link, $fasyankes_kode)
+    {
+        $menu_data = $this->M_MenuAdmin->getMenuByFasyankesKode($fasyankes_kode);
+
+        foreach ($menu_data as $menu) {
+            if ($menu['menu_link'] == $menu_link) {
+                return FALSE;
+            }
+        }
+
+        return TRUE;
     }
 
 
@@ -404,6 +442,8 @@ class Admin extends CI_Controller
     {
         $this->IsLoggedIn();
 
+        $fasyankes_kode = $this->input->post('fasyankes_kode', true);
+
         $this->form_validation->set_rules('menu_nm', 'Nama Menu', 'required');
         $this->form_validation->set_rules('menu_type', 'Jenis Menu', 'required|in_list[content,dropdown]');
 
@@ -415,8 +455,8 @@ class Admin extends CI_Controller
             $this->form_validation->set_rules('menu_link', 'Link', 'trim');
         } else {
             if ($new_menu_link != $current_menu_link) {
-                $this->form_validation->set_rules('menu_link', 'Link', 'trim|is_unique[menu.menu_link]', [
-                    'is_unique' => 'Link telah terdaftar, buat link dengan nama berbeda!'
+                $this->form_validation->set_rules('menu_link', 'Link', 'trim|callback_check_unique_link[' . $fasyankes_kode . ']', [
+                    'check_unique_link' => 'Link telah terdaftar untuk Fasyankes ini, buat link dengan nama berbeda!'
                 ]);
             } else {
                 $this->form_validation->set_rules('menu_link', 'Link', 'trim');
@@ -433,7 +473,7 @@ class Admin extends CI_Controller
                 'menu_nm' => $this->input->post('menu_nm', true),
                 'menu_type' => $this->input->post('menu_type', true),
                 'menu_order' => $this->input->post('menu_order', true),
-                'menu_link' => $this->input->post('menu_link', true) ?: '#',
+                'menu_link' => $this->input->post('menu_type', true) === 'dropdown' ? '#' : ($this->input->post('menu_link', true) ?: '#'),
                 'active_st' => $this->input->post('active_st', true),
                 'updated_at' => date('Y-m-d H:i:s', true)
             ];

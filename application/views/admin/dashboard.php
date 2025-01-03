@@ -291,6 +291,8 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <form action="<?= base_url('admin/editfasyankes'); ?>" method="post">
+                        <input type="hidden" name="current_fasyankes_kode" value="<?= $main['fasyankes_kode']; ?>">
+                        <input type="hidden" name="current_fasyankes_nm" value="<?= $main['fasyankes_nm']; ?>">
                         <div class="modal-body">
                             <div class="mb-3">
                                 <label class="form-label text-secondary">Kode Fasyankes</label>
