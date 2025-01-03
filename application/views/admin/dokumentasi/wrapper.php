@@ -105,31 +105,16 @@
     <div class="page-nav">
         <div class="container-xl">
             <div class="justify-content-between row">
-                <div class="mb-2 col-12 mb-md-0 col-md-4 col-lg-3">
-                    <a href="" class="p-0 btn w-100 card">
-                        <div class=" w-100">
-                            <div class="py-2 card-header">
-                                <h3 class="opacity-50 card-title">
-                                    <- Sebelumnya</h3>
-                            </div>
-                            <div class="opacity-75 card-body w-100 text-start">Sejarah SIMRS</div>
-                        </div>
-                    </a>
+                <div id="prev-button" class="mb-2 col-12 mb-md-0 col-md-4 col-lg-3">
+                    <!-- Tombol sebelumnya akan di-generate di sini -->
                 </div>
-                <div class="col-12 col-md-4 col-lg-3">
-                    <a href="" class="p-0 btn w-100 card">
-                        <div class=" w-100">
-                            <div class="py-2 card-header justify-content-end">
-                                <h3 class="opacity-50 card-title">
-                                    Selanjutnya -></h3>
-                            </div>
-                            <div class="opacity-75 card-body w-100 text-end">Sejarah Rumah Sakit</div>
-                        </div>
-                    </a>
+                <div id="next-button" class="col-12 col-md-4 col-lg-3">
+                    <!-- Tombol selanjutnya akan di-generate di sini -->
                 </div>
             </div>
         </div>
     </div>
+
 
     <footer class="footer footer-transparent d-print-none">
         <div class="container-xl">

@@ -237,7 +237,7 @@ class Admin extends CI_Controller
         ];
 
         // echo '<pre>';
-        // var_dump($data['breadcrumb']);
+        // var_dump($data['menu_data']);
         // echo '</pre>';
         // die;
 

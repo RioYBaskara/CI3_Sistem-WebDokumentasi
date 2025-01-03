@@ -69,7 +69,8 @@
                         <!-- Parent menu -->
                         <li
                             class="fs-5 nav-item <?= $menu['menu_type'] == 'dropdown' ? 'dropdown' : ''; ?> <?= $is_active ? 'active' : ''; ?>">
-                            <a class="fs-5 nav-link <?= $menu['menu_type'] == 'dropdown' ? 'dropdown-toggle' : ''; ?>"
+                            <a tipe-menu="<?= $menu['menu_type'] ?>"
+                                class="fs-5 nav-link <?= $menu['menu_type'] == 'dropdown' ? 'dropdown-toggle' : ''; ?>"
                                 href="<?= $menu['menu_type'] == 'content' ? base_url('admin/dokumentasi/' . $fasyankes_kode . '/' . $menu['menu_link']) : '#'; ?>"
                                 data-bs-toggle="<?= $menu['menu_type'] == 'dropdown' ? 'dropdown' : ''; ?>"
                                 data-bs-auto-close="false">
@@ -112,11 +113,11 @@ function generate_submenus($parent_id, $menu_data, $fasyankes_kode)
             // Jika menu type 'content', tampilkan sebagai link biasa
             if ($submenu['menu_type'] == 'content') {
                 if ($submenu['active_st'] == 1) {
-                    $submenu_html .= '<a class="fs-5 dropdown-item" href="' . base_url('admin/dokumentasi/' . $fasyankes_kode . '/' . $submenu['menu_link']) . '"><span class="fs-5 status status-green">';
+                    $submenu_html .= '<a tipe-menu="' . $submenu['menu_type'] . '" class="fs-5 dropdown-item" href="' . base_url('admin/dokumentasi/' . $fasyankes_kode . '/' . $submenu['menu_link']) . '"><span class="fs-5 status status-green">';
                     $submenu_html .= $submenu['menu_nm'];
                     $submenu_html .= '</span></a>';
                 } else {
-                    $submenu_html .= '<a class="fs-5 dropdown-item" href="' . base_url('admin/dokumentasi/' . $fasyankes_kode . '/' . $submenu['menu_link']) . '"><span class="fs-5 status status-red">';
+                    $submenu_html .= '<a tipe-menu="' . $submenu['menu_type'] . '" class="fs-5 dropdown-item" href="' . base_url('admin/dokumentasi/' . $fasyankes_kode . '/' . $submenu['menu_link']) . '"><span class="fs-5 status status-red">';
                     $submenu_html .= $submenu['menu_nm'];
                     $submenu_html .= '</span></a>';
                 }
@@ -126,13 +127,13 @@ function generate_submenus($parent_id, $menu_data, $fasyankes_kode)
             if ($submenu['menu_type'] == 'dropdown') {
                 if ($submenu['active_st'] == 1) {
                     $submenu_html .= '<div class="dropend">';
-                    $submenu_html .= '<a class="fs-5 dropdown-item dropdown-toggle" href="#" data-bs-toggle="dropdown" data-bs-auto-close="false"><span class="fs-5 status status-green">';
+                    $submenu_html .= '<a tipe-menu="' . $submenu['menu_type'] . '" class="fs-5 dropdown-item dropdown-toggle" href="#" data-bs-toggle="dropdown" data-bs-auto-close="false"><span class="fs-5 status status-green">';
                     $submenu_html .= $submenu['menu_nm'];
                     $submenu_html .= '</span></a>';
                     $submenu_html .= '<div class="dropdown-menu show">';
                 } else {
                     $submenu_html .= '<div class="dropend">';
-                    $submenu_html .= '<a class="fs-5 dropdown-item dropdown-toggle" href="#" data-bs-toggle="dropdown" data-bs-auto-close="false"><span class="fs-5 status status-red">';
+                    $submenu_html .= '<a tipe-menu="' . $submenu['menu_type'] . '" class="fs-5 dropdown-item dropdown-toggle" href="#" data-bs-toggle="dropdown" data-bs-auto-close="false"><span class="fs-5 status status-red">';
                     $submenu_html .= $submenu['menu_nm'];
                     $submenu_html .= '</span></a>';
                     $submenu_html .= '<div class="dropdown-menu show">';

@@ -253,6 +253,67 @@
     });
 </script>
 
+<!-- tombol selanjutnya sebelumnya -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Ambil semua elemen <a> dengan tipe-menu="content" dalam sidebar
+        const menuLinks = Array.from(
+            document.querySelectorAll('.navbar-nav a[tipe-menu="content"]')
+        );
+
+        // Ambil URL halaman saat ini
+        const currentUrl = window.location.href;
+
+        // Temukan indeks elemen aktif
+        const currentIndex = menuLinks.findIndex(link => link.href === currentUrl);
+
+        // Referensi ke container tombol
+        const prevButtonContainer = document.getElementById("prev-button");
+        const nextButtonContainer = document.getElementById("next-button");
+
+        // Reset kontainer tombol
+        prevButtonContainer.innerHTML = "";
+        nextButtonContainer.innerHTML = "";
+
+        // Buat tombol "Sebelumnya" jika ada elemen sebelumnya
+        if (currentIndex > 0) {
+            const prevLink = menuLinks[currentIndex - 1];
+            const prevButton = `
+            <a href="${prevLink.href}" class="p-0 btn w-100 card">
+                <div class="w-100">
+                    <div class="py-2 card-header">
+                        <h3 class="opacity-50 card-title"><- Sebelumnya</h3>
+                    </div>
+                    <div class="opacity-75 card-body w-100 text-start">
+                        ${prevLink.textContent.trim()}
+                    </div>
+                </div>
+            </a>
+        `;
+            prevButtonContainer.innerHTML = prevButton;
+        }
+
+        // Buat tombol "Selanjutnya" jika ada elemen berikutnya
+        if (currentIndex < menuLinks.length - 1) {
+            const nextLink = menuLinks[currentIndex + 1];
+            const nextButton = `
+            <a href="${nextLink.href}" class="p-0 btn w-100 card">
+                <div class="w-100">
+                    <div class="py-2 card-header justify-content-end">
+                        <h3 class="opacity-50 card-title">Selanjutnya -></h3>
+                    </div>
+                    <div class="opacity-75 card-body w-100 text-end">
+                        ${nextLink.textContent.trim()}
+                    </div>
+                </div>
+            </a>
+        `;
+            nextButtonContainer.innerHTML = nextButton;
+        }
+    });
+
+</script>
+
 </body>
 
 </html>
