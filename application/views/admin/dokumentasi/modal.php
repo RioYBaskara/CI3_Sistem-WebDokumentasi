@@ -144,6 +144,7 @@
     aria-hidden="true">
     <div class="modal-dialog">
         <form action="<?= base_url('admin/addMenu') ?>" method="post">
+        <input type="hidden" name="redirect_url" value="<?= current_url(); ?>">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="addMenuModalLabel">Tambah Menu Parent</h5>
@@ -252,6 +253,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form action="<?php echo base_url('admin/addSubmenu'); ?>" method="POST">
+                    <input type="hidden" name="redirect_url" value="<?= current_url(); ?>">
                     <input type="hidden" name="fasyankes_kode" value="<?= $this->uri->segment(3); ?>">
                     <div class="modal-body">
                         <input type="hidden" name="menu_parent_id" value="<?php echo $menu['menu_id']; ?>">
@@ -292,6 +294,7 @@
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <form action="<?= base_url('admin/editMenu'); ?>" method="POST">
+                    <input type="hidden" name="redirect_url" value="<?= current_url(); ?>">
                     <input type="hidden" name="fasyankes_kode" value="<?= $this->uri->segment(3); ?>">
                     <div class="modal-header">
                         <h5 class="modal-title" id="editMenuModalLabel_<?= $menu['menu_id']; ?>">Edit Menu
@@ -300,6 +303,7 @@
                     </div>
                     <div class="modal-body">
                         <input type="hidden" name="menu_id" value="<?= $menu['menu_id']; ?>">
+                        <input type="hidden" name="current_menu_link" value="<?= $menu['menu_link']; ?>">
                         <div class="mb-3">
                             <label for="menu_nm_<?= $menu['menu_id']; ?>" class="form-label">Nama Menu</label>
                             <input type="text" name="menu_nm" id="menu_nm_<?= $menu['menu_id']; ?>" class="form-control"
@@ -309,8 +313,9 @@
                         <div class="mb-3 form-selectgroup-boxes row">
                             <div class="col-lg-6">
                                 <label class="form-selectgroup-item">
-                                    <input type="radio" name="menu_type" value="dropdown" class="form-selectgroup-input menu-type"
-                                        data-menu-id="<?= $menu['menu_id']; ?>" <?= ($menu['menu_type'] === 'dropdown') ? 'checked' : '' ?>>
+                                    <input type="radio" name="menu_type" value="dropdown"
+                                        class="form-selectgroup-input menu-type" data-menu-id="<?= $menu['menu_id']; ?>"
+                                        <?= ($menu['menu_type'] === 'dropdown') ? 'checked' : '' ?>>
                                     <span class="p-3 form-selectgroup-label d-flex align-items-center">
                                         <span class="me-3">
                                             <span class="form-selectgroup-check"></span>
@@ -323,8 +328,9 @@
                             </div>
                             <div class="col-lg-6">
                                 <label class="form-selectgroup-item">
-                                    <input type="radio" name="menu_type" value="content" class="form-selectgroup-input menu-type"
-                                        data-menu-id="<?= $menu['menu_id']; ?>" <?= ($menu['menu_type'] === 'content') ? 'checked' : '' ?>>
+                                    <input type="radio" name="menu_type" value="content"
+                                        class="form-selectgroup-input menu-type" data-menu-id="<?= $menu['menu_id']; ?>"
+                                        <?= ($menu['menu_type'] === 'content') ? 'checked' : '' ?>>
                                     <span class="p-3 form-selectgroup-label d-flex align-items-center">
                                         <span class="me-3">
                                             <span class="form-selectgroup-check"></span>
@@ -336,15 +342,16 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="mb-3" id="menuLinkField_<?= $menu['menu_id']; ?>" style="display: <?= ($menu['menu_type'] === 'content') ? 'block' : 'none'; ?>">
+                        <div class="mb-3" id="menuLinkField_<?= $menu['menu_id']; ?>"
+                            style="display: <?= ($menu['menu_type'] === 'content') ? 'block' : 'none'; ?>">
                             <label for="menu_link_<?= $menu['menu_id']; ?>" class="form-label">Link Content</label>
                             <input type="text" name="menu_link" id="menu_link_<?= $menu['menu_id']; ?>" class="form-control"
                                 value="<?= $menu['menu_link']; ?>">
                         </div>
                         <div class="mb-3">
                             <label for="menu_order_<?= $menu['menu_id']; ?>" class="form-label">Urutan Menu</label>
-                            <input type="number" name="menu_order" id="menu_order_<?= $menu['menu_id']; ?>" class="form-control"
-                                value="<?= $menu['menu_order']; ?>" required>
+                            <input type="number" name="menu_order" id="menu_order_<?= $menu['menu_id']; ?>"
+                                class="form-control" value="<?= $menu['menu_order']; ?>" required>
                         </div>
                         <label class="form-label">Active?</label>
                         <div class="mb-3 form-selectgroup-boxes row">
@@ -393,6 +400,7 @@
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <form action="<?= base_url('admin/saveContent') ?>" method="post">
+                <input type="hidden" name="redirect_url" value="<?= current_url(); ?>">
                 <div class="modal-header">
                     <h5 class="modal-title" id="contentModalLabel">Edit Konten</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

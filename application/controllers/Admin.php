@@ -200,7 +200,7 @@ class Admin extends CI_Controller
         // Jika $menu_url kosong, arahkan ke menu pertama berdasarkan urutan
         if ($menu_url == null) {
             // Cari menu pertama berdasarkan urutan
-            $first_menu = $this->M_MenuAdmin->getFirstMenuByFasyankesKode($fasyankes_kode);
+            $first_menu = $this->M_MenuAdmin->getFirstMenuContentByFasyankesKode($fasyankes_kode);
 
             if ($first_menu) {
                 // Redirect ke menu pertama
@@ -278,7 +278,7 @@ class Admin extends CI_Controller
             $this->session->set_flashdata('error', 'Gagal menyimpan konten.');
         }
 
-        redirect($_SERVER['HTTP_REFERER']);
+        redirect($this->input->post('redirect_url'));
     }
 
     public function upload_image()
@@ -310,10 +310,13 @@ class Admin extends CI_Controller
 
         $this->form_validation->set_rules('menu_nm', 'Nama Menu', 'required');
         $this->form_validation->set_rules('menu_type', 'Jenis Menu', 'required|in_list[content,dropdown]');
+        $this->form_validation->set_rules('menu_link', 'Link', 'trim|is_unique[menu.menu_link]', [
+            'is_unique' => 'Link telah terdaftar, buat link dengan nama berbeda!'
+        ]);
 
         if ($this->form_validation->run() == FALSE) {
             $this->session->set_flashdata('error', validation_errors());
-            redirect('admin/dokumentasi/' . $this->input->post('fasyankes_kode'));
+            redirect($this->input->post('redirect_url'));
         } else {
 
             $menu_nm = $this->input->post('menu_nm', true);
@@ -342,7 +345,7 @@ class Admin extends CI_Controller
 
             $this->session->set_flashdata('success', 'Menu berhasil ditambahkan!');
 
-            return redirect('admin/dokumentasi/' . $this->input->post('fasyankes_kode'));
+            redirect($this->input->post('redirect_url'));
         }
     }
 
@@ -354,10 +357,13 @@ class Admin extends CI_Controller
         $this->form_validation->set_rules('menu_nm', 'Nama Menu', 'required');
         $this->form_validation->set_rules('menu_type', 'Jenis Menu', 'required|in_list[content,dropdown]');
         $this->form_validation->set_rules('menu_parent_id', 'Parent Menu', 'required|integer');
+        $this->form_validation->set_rules('menu_link', 'Link', 'trim|is_unique[menu.menu_link]', [
+            'is_unique' => 'Link telah terdaftar, buat link dengan nama berbeda!'
+        ]);
 
         if ($this->form_validation->run() == FALSE) {
             $this->session->set_flashdata('error', validation_errors());
-            redirect('admin/dokumentasi/' . $this->input->post('fasyankes_kode'));
+            redirect($this->input->post('redirect_url'));
         } else {
             // Data yang diterima dari form
             $data = [
@@ -379,7 +385,7 @@ class Admin extends CI_Controller
 
             $this->session->set_flashdata('success', 'Submenu berhasil ditambahkan!');
 
-            redirect('admin/dokumentasi/' . $this->input->post('fasyankes_kode'));
+            redirect($this->input->post('redirect_url'));
         }
     }
 
@@ -401,9 +407,25 @@ class Admin extends CI_Controller
         $this->form_validation->set_rules('menu_nm', 'Nama Menu', 'required');
         $this->form_validation->set_rules('menu_type', 'Jenis Menu', 'required|in_list[content,dropdown]');
 
+        // form validasi menu link
+        $current_menu_link = $this->input->post('current_menu_link');
+        $new_menu_link = $this->input->post('menu_link');
+
+        if ($current_menu_link == "#") {
+            $this->form_validation->set_rules('menu_link', 'Link', 'trim');
+        } else {
+            if ($new_menu_link != $current_menu_link) {
+                $this->form_validation->set_rules('menu_link', 'Link', 'trim|is_unique[menu.menu_link]', [
+                    'is_unique' => 'Link telah terdaftar, buat link dengan nama berbeda!'
+                ]);
+            } else {
+                $this->form_validation->set_rules('menu_link', 'Link', 'trim');
+            }
+        }
+
         if ($this->form_validation->run() == FALSE) {
             $this->session->set_flashdata('error', validation_errors());
-            redirect('admin/dokumentasi/' . $this->input->post('fasyankes_kode'));
+            redirect($this->input->post('redirect_url'));
         } else {
 
             $data = [
@@ -420,7 +442,7 @@ class Admin extends CI_Controller
 
             $this->session->set_flashdata('success', 'Menu berhasil diedit!');
 
-            redirect('admin/dokumentasi/' . $this->input->post('fasyankes_kode'));
+            redirect($this->input->post('redirect_url'));
         }
     }
 
