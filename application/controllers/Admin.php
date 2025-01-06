@@ -250,6 +250,9 @@ class Admin extends CI_Controller
             }
         }
 
+        // nama fasyankes
+        $fasyankes_data = $this->M_MenuAdmin->getFasyankesByFasyankesKode($fasyankes_kode);
+
         // Menyiapkan data untuk view
         $data = [
             'menu_data' => $menu_data,
@@ -258,11 +261,12 @@ class Admin extends CI_Controller
             'breadcrumb' => $breadcrumb,
             'user_role' => $this->session->userdata('user_role'),
             'fasyankes_kode' => $fasyankes_kode,
-            'menu_url' => $menu_url
+            'menu_url' => $menu_url,
+            'fasyankes_data' => $fasyankes_data
         ];
 
         // echo '<pre>';
-        // var_dump($data['menu_data']);
+        // var_dump($data);
         // echo '</pre>';
         // die;
 

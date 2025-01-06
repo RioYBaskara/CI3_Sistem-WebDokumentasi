@@ -58,7 +58,7 @@
             <div>
                 <h5 class="px-1 bold">
                     <!-- fieldmarkfasyankes -->
-                    <h1><strong>Dokumentasi SIMRS - RS Umum Daerah Tidar</strong></h1>
+                    <h1><strong>Dokumentasi SIMRS - <?= $fasyankes_data['fasyankes_nm']; ?></strong></h1>
                 </h5>
             </div>
         </div>

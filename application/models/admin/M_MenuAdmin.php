@@ -46,6 +46,16 @@ class M_MenuAdmin extends CI_Model
         return $query->row_array();
     }
 
+    public function getFasyankesByFasyankesKode($fasyankes_kode)
+    {
+        $this->db->select('*');
+        $this->db->from('fasyankes');
+        $this->db->where('fasyankes_kode', $fasyankes_kode);
+        $query = $this->db->get();
+
+        return $query->row_array();
+    }
+
     public function getMenuBreadcrumb($menu_id)
     {
         $breadcrumb = [];
