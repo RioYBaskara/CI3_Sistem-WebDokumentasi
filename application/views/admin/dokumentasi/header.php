@@ -33,6 +33,10 @@
         body {
             font-feature-settings: "cv03", "cv04", "cv11";
         }
+
+        html {
+            scroll-padding-top: 30px;
+        }
     </style>
 
     <style>

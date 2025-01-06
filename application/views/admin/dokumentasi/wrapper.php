@@ -87,11 +87,8 @@
                             <div class="mb-3 h3">Daftar isi</div>
                             <div class="">
                                 <div>
-                                    <ul class="p-0 space-y-2 list-unstyled">
-                                        <li><a href="#PT. Indo Techno Medic" class="link-secondary">PT. Indo
-                                                Techno Medic</a></li>
-                                        <li><a href="#Legalitas" class="link-secondary">Legalitas</a></li>
-                                        <li><a href="#Lokasi" class="link-secondary">Lokasi</a></li>
+                                    <ul id="daftar-isi" class="p-0 space-y-2 list-unstyled">
+                                        <!-- Daftar isi dinamis akan ditambahkan di sini -->
                                     </ul>
                                 </div>
                             </div>

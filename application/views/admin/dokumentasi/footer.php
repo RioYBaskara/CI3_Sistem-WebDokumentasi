@@ -133,8 +133,18 @@
             ],
             toolbar: 'undo redo | formatselect | bold italic backcolor | ' +
                 'alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | ' +
-                'removeformat | link image',
+                'removeformat | link image | h1 h2 h3 h4 h5 h6 |',
             file_picker_types: 'image',
+            setup: function (editor) {
+                editor.on('NodeChange', function (e) {
+                    var headings = editor.dom.select('h1, h2, h3, h4, h5');
+                    headings.forEach(function (heading) {
+                        if (!heading.id) {
+                            heading.id = heading.innerText.replace(/\s+/g, '-').toLowerCase();
+                        }
+                    });
+                });
+            },
             file_picker_callback: function (callback, value, meta) {
                 if (meta.filetype === 'image') {
                     var input = document.createElement('input');
@@ -183,6 +193,42 @@
             }
         });
 
+    });
+</script>
+
+<!-- table of content dinamis -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        function generateTableOfContents() {
+            var toc = document.querySelector('#daftar-isi');
+            var contentBody = document.querySelector('.page-body .container-xl .row .col-lg-9 .card-body');
+
+            if (!contentBody) {
+                console.error("Konten tidak ditemukan");
+                return;
+            }
+
+            var headings = contentBody.querySelectorAll('h1, h2, h3, h4, h5');
+
+            toc.innerHTML = '';
+
+            headings.forEach(function (heading) {
+                var level = parseInt(heading.tagName[1]);
+                var link = document.createElement('a');
+                link.href = '#' + heading.id;
+                link.classList.add('link-secondary');
+                link.textContent = heading.textContent;
+
+                var listItem = document.createElement('li');
+                listItem.appendChild(link);
+
+                listItem.style.marginLeft = (level - 1) * 10 + 'px';
+
+                toc.appendChild(listItem);
+            });
+        }
+
+        setTimeout(generateTableOfContents, 100);
     });
 </script>
 
