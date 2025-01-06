@@ -14,7 +14,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <!-- fieldmarktitle -->
-    <title>Dokumentasi <?= $fasyankes_data['fasyankes_nm']; ?> - Admin SIMRS </title>
+    <title>Dokumentasi <?= $fasyankes_data['fasyankes_nm']; ?> - SIMRS ITM</title>
     <!-- CSS files -->
     <link rel="stylesheet" href="assets/css/fontawesome/css/font-awesome.min.css" />
     <link href="<?= base_url(); ?>assets/tabler/dist/css/tabler.min.css?1692870487" rel="stylesheet" />
@@ -36,15 +36,6 @@
 
         html {
             scroll-padding-top: 30px;
-        }
-    </style>
-
-    <style>
-        .crud-menu {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1050;
         }
     </style>
 </head>
