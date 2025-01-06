@@ -368,7 +368,7 @@
             let keyword = $(this).val();
             let fasyankesKode = window.location.pathname.split('/')[4];
 
-            if (keyword.length > 2) {
+            if (keyword.length >= 2) {
                 // AJAX request ke server
                 $.ajax({
                     url: '<?= base_url('admin/searchMenu'); ?>',
