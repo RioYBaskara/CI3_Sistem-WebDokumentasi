@@ -279,6 +279,22 @@ class Admin extends CI_Controller
         $this->load->view('admin/dokumentasi/footer', $data);
     }
 
+    // search, pakai ajax
+    public function searchMenu()
+    {
+        $keyword = $this->input->post('keyword');
+        $fasyankes_kode = $this->input->post('fasyankes_kode');
+
+        if (empty($keyword) || empty($fasyankes_kode)) {
+            echo json_encode([]);
+            return;
+        }
+
+        $result = $this->M_MenuAdmin->searchMenuByFasyankes($keyword, $fasyankes_kode);
+
+        echo json_encode($result);
+    }
+
     // content
     public function saveContent()
     {

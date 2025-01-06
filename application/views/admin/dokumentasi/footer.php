@@ -58,6 +58,7 @@
     });
 </script>
 
+<!-- mark error, ini apa ya hmm -->
 <script>
     $(document).ready(function () {
         // Get fasyankes_kode from the URL
@@ -128,8 +129,8 @@
             statusbar: true,
             plugins: [
                 "image", "code", "table", "link", "media", "codesample",
-                "advlist", "autolink", "lists", "charmap", "print", "preview", "anchor",
-                "searchreplace", "visualblocks", "fullscreen", "insertdatetime", "paste", "help", "wordcount"
+                "advlist", "autolink", "lists", "charmap", "preview", "anchor",
+                "searchreplace", "visualblocks", "fullscreen", "insertdatetime", "help", "wordcount"
             ],
             toolbar: 'undo redo | formatselect | bold italic backcolor | ' +
                 'alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | ' +
@@ -358,6 +359,56 @@
         }
     });
 
+</script>
+
+<script>
+    $(document).ready(function () {
+        // Tangkap input pencarian
+        $('input[name="search"]').on('input', function () {
+            let keyword = $(this).val();
+            let fasyankesKode = window.location.pathname.split('/')[4];
+
+            if (keyword.length > 2) {
+                // AJAX request ke server
+                $.ajax({
+                    url: '<?= base_url('admin/searchMenu'); ?>',
+                    method: 'POST',
+                    data: {
+                        keyword: keyword,
+                        fasyankes_kode: fasyankesKode
+                    },
+                    success: function (response) {
+                        let result = JSON.parse(response);
+
+                        $('.modal-body .row').empty();
+
+                        if (result.length > 0) {
+                            result.forEach(function (item) {
+                                let resultItem = `
+                                <div class="py-2 col-12">
+                                    <a href="${item.menu_link}" class="p-0 btn w-100 card">
+                                        <div class="w-100 card-body">
+                                            <div class="p-0 overflow-auto card-body w-100 text-start">
+                                                <h3 class="opacity-80 card-title">${item.menu_nm}</h3>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>`;
+                                $('.modal-body .row').append(resultItem);
+                            });
+                        } else {
+                            $('.modal-body .row').append('<p class="text-muted">Tidak ada hasil yang ditemukan.</p>');
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error:', error);
+                    }
+                });
+            } else {
+                $('.modal-body .row').empty();
+            }
+        });
+    });
 </script>
 
 </body>

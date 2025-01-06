@@ -100,7 +100,18 @@ class M_MenuAdmin extends CI_Model
             ->getResultArray();
     }
 
+    public function searchMenuByFasyankes($keyword, $fasyankes_kode)
+    {
+        $this->db->select('menu_id, menu_nm, menu_link');
+        $this->db->from('menu');
+        $this->db->where('fasyankes_kode', $fasyankes_kode);
+        $this->db->where("menu_nm ILIKE '%" . $this->db->escape_like_str($keyword) . "%'", NULL, FALSE);
+        $this->db->where('active_st', 1);
+        $this->db->where('menu_type', 'content');
+        $query = $this->db->get();
 
+        return $query->result_array();
+    }
 
     // Method untuk menambah menu
     public function insertMenu($data)
