@@ -1,18 +1,18 @@
 <!-- Sidebar -->
 <aside class="navbar navbar-vertical navbar-expand-lg" data-bs-theme="light">
-    <div class="container-fluid">
+    <div class="container-fluid position-relative">
         <!-- Tambahkan Button untuk CRUD Menu -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-menu"
             aria-controls="sidebar-menu" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <h1 class="navbar-brand navbar-brand-autodark">
+        <h1 class="navbar-brand navbar-brand-autodark logoitm">
             <a href=".">
                 <img src="<?= base_url(); ?>assets/img/logoitm.png" width="110" height="32" alt="SIMRS ITM"
                     class="navbar-brand-image">
             </a>
         </h1>
-        <div class="gap-3 px-1 d-flex d-block d-lg-none">
+        <div class="gap-1 px-1 d-flex d-block d-lg-none">
             <a class="p-0 border-0 search nav-link" title="Search" data-bs-toggle="tooltip" data-bs-placement="left">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -55,47 +55,44 @@
                 </svg>
             </a>
         </div>
-        <strong>
-            <div class="collapse navbar-collapse fs-3" id="sidebar-menu">
-                <ul class="navbar-nav pt-lg-3 fs-3">
-                    <?php
-                    // Variabel untuk menyimpan menu yang sedang aktif
-                    $active_menu_ids = array_column($breadcrumb, 'menu_id');
-
-                    foreach ($menu_data as $menu):
-                        // Periksa apakah menu adalah parent dan sedang aktif
-                        $is_active = in_array($menu['menu_id'], $active_menu_ids);
-                        ?>
-                        <?php if ($menu['menu_parent_id'] == null): ?>
-                            <!-- Parent menu -->
-                            <li
-                                class="fs-3 nav-item <?= $menu['menu_type'] == 'dropdown' ? 'dropdown' : ''; ?> <?= $is_active ? 'active' : ''; ?>">
-                                <a tipe-menu="<?= $menu['menu_type'] ?>"
-                                    class="fs-3 nav-link <?= $menu['menu_type'] == 'dropdown' ? 'dropdown-toggle' : ''; ?>"
-                                    href="<?= $menu['menu_type'] == 'content' ? base_url('SIMRS/dokumentasi/' . $fasyankes_kode . '/' . $menu['menu_link']) : '#'; ?>"
-                                    data-bs-toggle="<?= $menu['menu_type'] == 'dropdown' ? 'dropdown' : ''; ?>"
-                                    data-bs-auto-close="false">
-                                    <!-- Check active_st and display appropriate span -->
-                                    <span class="fs-3 nav-link-title"><?= $menu['menu_nm']; ?></span>
-                                </a>
-                                <?php if ($menu['menu_type'] == 'dropdown'): ?>
-                                    <div class="dropdown-menu fs-3">
-                                        <div class="dropdown-menu-columns fs-3">
-                                            <div class="dropdown-menu-column fs-3">
-                                                <?php
-                                                // Call the recursive function for child menus
-                                                echo generate_submenus($menu['menu_id'], $menu_data, $fasyankes_kode, $active_menu_ids);
-                                                ?>
-                                            </div>
+        <div class="collapse navbar-collapse fs-3" id="sidebar-menu">
+            <ul class="navbar-nav pt-lg-3 fs-3">
+                <?php
+                // Variabel untuk menyimpan menu yang sedang aktif
+                $active_menu_ids = array_column($breadcrumb, 'menu_id');
+                foreach ($menu_data as $menu):
+                    // Periksa apakah menu adalah parent dan sedang aktif
+                    $is_active = in_array($menu['menu_id'], $active_menu_ids);
+                    ?>
+                    <?php if ($menu['menu_parent_id'] == null): ?>
+                        <!-- Parent menu -->
+                        <li
+                            class="fs-3 nav-item <?= $menu['menu_type'] == 'dropdown' ? 'dropdown' : ''; ?> <?= $is_active ? 'active' : ''; ?>">
+                            <a tipe-menu="<?= $menu['menu_type'] ?>"
+                                class="fs-3 nav-link <?= $menu['menu_type'] == 'dropdown' ? 'dropdown-toggle' : ''; ?>"
+                                href="<?= $menu['menu_type'] == 'content' ? base_url('SIMRS/dokumentasi/' . $fasyankes_kode . '/' . $menu['menu_link']) : '#'; ?>"
+                                data-bs-toggle="<?= $menu['menu_type'] == 'dropdown' ? 'dropdown' : ''; ?>"
+                                data-bs-auto-close="false">
+                                <!-- Check active_st and display appropriate span -->
+                                <span class="fs-3 nav-link-title"><?= $menu['menu_nm']; ?></span>
+                            </a>
+                            <?php if ($menu['menu_type'] == 'dropdown'): ?>
+                                <div class="dropdown-menu fs-3">
+                                    <div class="dropdown-menu-columns fs-3">
+                                        <div class="dropdown-menu-column fs-3">
+                                            <?php
+                                            // Call the recursive function for child menus
+                                            echo generate_submenus($menu['menu_id'], $menu_data, $fasyankes_kode, $active_menu_ids);
+                                            ?>
                                         </div>
                                     </div>
-                                <?php endif; ?>
-                            </li>
-                        <?php endif; ?>
-                    <?php endforeach; ?>
-                </ul>
-            </div>
-        </strong>
+                                </div>
+                            <?php endif; ?>
+                        </li>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            </ul>
+        </div>
     </div>
 </aside>
 

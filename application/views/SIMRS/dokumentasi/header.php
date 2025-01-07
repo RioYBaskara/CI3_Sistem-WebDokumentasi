@@ -37,6 +37,15 @@
         html {
             scroll-padding-top: 30px;
         }
+
+        @media (max-width: 768px) {
+            h1.logoitm {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+        }
     </style>
 </head>
 

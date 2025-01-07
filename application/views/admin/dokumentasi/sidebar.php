@@ -1,6 +1,6 @@
 <!-- Sidebar -->
 <aside class="navbar navbar-vertical navbar-expand-lg" data-bs-theme="light">
-    <div class="container-fluid">
+    <div class="container-fluid position-relative">
         <!-- Tambahkan Button untuk CRUD Menu -->
         <button class="p-3 mt-3 btn btn-square btn-ghost-link fs-4 crud-menu" data-bs-toggle="modal"
             data-bs-target="#menuModal">
@@ -18,7 +18,7 @@
             aria-controls="sidebar-menu" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <h1 class="navbar-brand navbar-brand-autodark">
+        <h1 class="navbar-brand navbar-brand-autodark logoitm">
             <a href=".">
                 <img src="<?= base_url(); ?>assets/img/logoitm.png" width="110" height="32" alt="SIMRS ITM"
                     class="navbar-brand-image">

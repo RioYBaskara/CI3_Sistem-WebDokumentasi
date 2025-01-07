@@ -6,6 +6,7 @@ class M_SIMRSFasyankes extends CI_Model
     public function getAllFasyankes()
     {
         $this->db->where('deleted_st', 0);
+        $this->db->where('active_st', 1);
         $this->db->order_by('created_at', 'ASC');
         $query = $this->db->get('fasyankes');
         return $query->result_array();
