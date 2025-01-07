@@ -35,7 +35,27 @@
         }
 
         html {
-            scroll-padding-top: 30px;
+            scroll-padding-top: 25vh;
+            scroll-behavior: smooth;
+        }
+
+        #daftar-isi a {
+            color: #6c757d;
+            text-decoration: none;
+            transition: color 0.3s ease, font-weight 0.3s ease;
+
+            position: -webkit-sticky;
+            position: sticky;
+            top: 20px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        #daftar-isi a.active {
+            color: #007bff;
+            font-weight: bold;
+            border-left: 3px solid #007bff;
+            padding-left: 5px;
         }
 
         @media (max-width: 768px) {

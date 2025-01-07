@@ -272,6 +272,51 @@
     });
 </script>
 
+<!-- highlight toc ketika active -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        setTimeout(() => {
+            const sections = document.querySelectorAll("h1, h2, h3, h4, h5");
+            const tocLinks = document.querySelectorAll("#daftar-isi a");
+
+            function resetHighlight() {
+                tocLinks.forEach((link) => link.classList.remove("active"));
+            }
+
+            function setFirstActive() {
+                const firstLink = tocLinks[0];
+                if (firstLink) {
+                    firstLink.classList.add("active");
+                }
+            }
+
+            const observer = new IntersectionObserver(
+                (entries) => {
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+
+                            const id = entry.target.getAttribute("id");
+                            resetHighlight();
+
+                            const activeLink = document.querySelector(`#daftar-isi a[href="#${id}"]`);
+                            if (activeLink) activeLink.classList.add("active");
+                        }
+                    });
+                },
+                {
+                    root: null,
+                    threshold: 0.5,
+                    rootMargin: "-50px 0px",
+                }
+            );
+
+            sections.forEach((section) => observer.observe(section));
+
+            setFirstActive();
+        }, 500);
+    });
+</script>
+
 </body>
 
 </html>
