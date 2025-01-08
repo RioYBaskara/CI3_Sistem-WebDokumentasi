@@ -37,4 +37,9 @@ class M_Content extends CI_Model
 
         return $query->row_array();
     }
+
+    public function deleteContentByMenuId($menu_id)
+    {
+        $this->db->where('menu_id', $menu_id)->delete('content');
+    }
 }

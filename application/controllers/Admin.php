@@ -25,7 +25,29 @@ class Admin extends CI_Controller
         $this->load->model('admin/M_Content');
         $this->load->library('session');
         $this->load->library('form_validation');
+        $this->load->helper('url');
+        $this->load->library('upload');
     }
+
+    // public function teshapusimagediassets()
+    // {
+    //     // URL gambar
+    //     $image_url = base_url() . "assets/img/content/677e17ff992ff.png";
+
+    //     // Konversi URL menjadi path lokal
+    //     $image_path = FCPATH . "assets/img/content/677e17ff992ff.png";
+
+    //     // Debugging
+    //     if (file_exists($image_path)) {
+    //         if (unlink($image_path)) {
+    //             echo "File berhasil dihapus: " . $image_path;
+    //         } else {
+    //             echo "Gagal menghapus file: " . $image_path;
+    //         }
+    //     } else {
+    //         echo "File tidak ditemukan: " . $image_path;
+    //     }
+    // }
 
     public function index()
     {
@@ -311,10 +333,29 @@ class Admin extends CI_Controller
                 'created_at' => date('Y-m-d H:i:s')
             ]);
         } else {
+            // Ambil konten lama
+            $old_content = $this->M_Content->getContentById($content_id);
+            $old_images = $this->extractImageUrls($old_content['content_body']);
+
             $result = $this->M_Content->updateContent($content_id, [
                 'content_body' => $content_body,
                 'updated_at' => date('Y-m-d H:i:s')
             ]);
+
+            // Ambil gambar baru
+            $new_images = $this->extractImageUrls($content_body);
+
+            // Hapus gambar lama yang tidak digunakan
+            foreach ($old_images as $image) {
+                $clean_path = str_replace('../../../', '', $image);
+
+                if (!in_array($image, $new_images) && strpos($clean_path, 'assets/img/content/') !== false) {
+                    $path = FCPATH . $clean_path;
+                    if (file_exists($path)) {
+                        unlink($path);
+                    }
+                }
+            }
         }
 
         if ($result) {
@@ -324,6 +365,18 @@ class Admin extends CI_Controller
         }
 
         redirect($this->input->post('redirect_url'));
+    }
+
+    private function extractImageUrls($content_body)
+    {
+        $image_urls = [];
+        preg_match_all('/<img[^>]+src=["\']([^"\']+)["\']/i', $content_body, $matches);
+
+        if (isset($matches[1])) {
+            $image_urls = $matches[1];
+        }
+
+        return $image_urls;
     }
 
     public function upload_image()
@@ -511,13 +564,33 @@ class Admin extends CI_Controller
     {
         $this->IsLoggedIn();
 
+        // Ambil konten terkait menu
+        $content = $this->M_Content->getContentByMenuId($menu_id);
+
+        if ($content) {
+            // Hapus gambar dari konten
+            $images = $this->extractImageUrls($content['content_body']);
+            foreach ($images as $image) {
+                $clean_path = str_replace('../../../', '', $image);
+
+                if (strpos($clean_path, 'assets/img/content/') !== false) {
+                    $path = FCPATH . $clean_path;
+                    if (file_exists($path)) {
+                        unlink($path);
+                    }
+                }
+            }
+
+            // Hapus konten dari database
+            $this->M_Content->deleteContentByMenuId($menu_id);
+        }
+
+        // Hapus menu
         $this->M_MenuAdmin->deleteMenu($menu_id);
 
-        $fasyankes_kode = $this->uri->segment(4);
+        $first_menu = $this->M_MenuAdmin->getFirstMenuContentByFasyankesKode($fasyankes_kode);
 
-        $this->session->set_flashdata('success', 'Menu berhasil dihapus!');
-
-        redirect('admin/dokumentasi/' . $fasyankes_kode);
+        $this->session->set_flashdata('success', 'Menu dan konten berhasil dihapus!');
+        redirect('admin/dokumentasi/' . $fasyankes_kode . '/' . $first_menu['menu_link']);
     }
-
 }
