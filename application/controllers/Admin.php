@@ -29,26 +29,6 @@ class Admin extends CI_Controller
         $this->load->library('upload');
     }
 
-    // public function teshapusimagediassets()
-    // {
-    //     // URL gambar
-    //     $image_url = base_url() . "assets/img/content/677e17ff992ff.png";
-
-    //     // Konversi URL menjadi path lokal
-    //     $image_path = FCPATH . "assets/img/content/677e17ff992ff.png";
-
-    //     // Debugging
-    //     if (file_exists($image_path)) {
-    //         if (unlink($image_path)) {
-    //             echo "File berhasil dihapus: " . $image_path;
-    //         } else {
-    //             echo "Gagal menghapus file: " . $image_path;
-    //         }
-    //     } else {
-    //         echo "File tidak ditemukan: " . $image_path;
-    //     }
-    // }
-
     public function index()
     {
         $this->IsLoggedIn();
