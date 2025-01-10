@@ -162,9 +162,9 @@
                             <div class="page-pretitle">
                                 Admin
                             </div>
-                            <h2 class="page-title">
+                            <h1 class="page-title">
                                 Dashboard
-                            </h2>
+                            </h1>
                         </div>
                         <!-- Page title actions -->
                         <div class="col-auto ms-auto d-print-none">
@@ -202,6 +202,7 @@
             <div class="page-body">
                 <div class="container-xl">
                     <div class="row row-deck row-cards">
+                        <h4 class="mb-0 text-secondary"><?= $total_rows ?> Fasyankes Tersedia</h4>
                         <!-- Looping data fasyankes -->
                         <?php foreach ($fasyankes as $main): ?>
                             <div class="col-sm-6 col-lg-4" data-bs-toggle="tooltip" data-bs-placement="bottom"
