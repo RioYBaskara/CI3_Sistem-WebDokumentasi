@@ -260,6 +260,20 @@
                         <?php endforeach; ?>
                     </div>
                 </div>
+                <?php if (!empty($pagination)): ?>
+                <div class="my-5 container-xl">
+                    <div class="row row-cards">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                        <?php echo $pagination; ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <?php endif; ?>
+
             </div>
 
 
@@ -542,6 +556,15 @@
     <!-- Tabler Core -->
     <script src="<?= base_url(); ?>assets/tabler/dist/js/tabler.min.js?1692870487" defer></script>
     <script src="<?= base_url(); ?>assets/tabler/dist/js/demo.min.js?1692870487" defer></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const pageLinks = document.querySelectorAll('.digit-link a');
+            pageLinks.forEach(function (link) {
+                link.classList.add('page-link');
+            });
+        });
+    </script>
 </body>
 
 </html>

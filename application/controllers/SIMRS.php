@@ -8,6 +8,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
  *  @property upload $upload 
  *  @property uri $uri 
  *  @property session $session 
+ *  @property pagination $pagination 
  *  @property M_SIMRSContent $M_SIMRSContent 
  *  @property M_SIMRSMenu $M_SIMRSMenu 
  *  @property M_SIMRSFasyankes $M_SIMRSFasyankes 
@@ -31,7 +32,52 @@ class SIMRS extends CI_Controller
 
     public function dashboard()
     {
-        $data['fasyankes'] = $this->M_SIMRSFasyankes->getAllFasyankes();
+        $limit = 6;
+
+        $total_rows = $this->M_SIMRSFasyankes->getCountFasyankes();
+        $data['total_rows'] = $total_rows;
+
+        $this->load->library('pagination');
+
+        $config['base_url'] = base_url('SIMRS/dashboard');
+        $config['total_rows'] = $total_rows;
+        $config['per_page'] = $limit;
+        $config['uri_segment'] = 3;
+        $config['use_page_numbers'] = false;
+
+        $config['full_tag_open'] = '<ul class="pagination">';
+        $config['full_tag_close'] = '</ul>';
+
+        $config['num_tag_open'] = '<li class="page-item digit-link">';
+        $config['num_tag_close'] = '</li>';
+
+        $config['cur_tag_open'] = '<li class="page-item active"><a class="page-link" href="#">';
+        $config['cur_tag_close'] = '</a></li>';
+
+        $config['next_tag_open'] = '<li class="page-link">';
+        $config['next_tag_close'] = '</li>';
+
+        $config['prev_tag_open'] = '<li class="page-link">';
+        $config['prev_tag_close'] = '</li>';
+
+        $config['first_tag_open'] = '<li class="page-link">';
+        $config['first_tag_close'] = '</li>';
+
+        $config['last_tag_open'] = '<li class="page-link">';
+        $config['last_tag_close'] = '</li>';
+
+        $config['next_link'] = '<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M9 6l6 6l-6 6"></path></svg>';
+        $config['prev_link'] = '<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M15 6l-6 6l6 6"></path></svg>';
+
+        $config['first_link'] = 'First';
+        $config['last_link'] = 'Last';
+
+        $this->pagination->initialize($config);
+
+        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+        $data['fasyankes'] = $this->M_SIMRSFasyankes->getAllFasyankes($config['per_page'], $page);
+
+        $data['pagination'] = $this->pagination->create_links();
 
         $this->load->view('SIMRS/dashboard', $data);
     }
