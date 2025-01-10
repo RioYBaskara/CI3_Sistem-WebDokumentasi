@@ -456,34 +456,61 @@
     });
 </script>
 
+<!-- menu order parent -->
 <script>
-    $(document).on('show.bs.modal', '#addMenuModal', function (event) {
-        const modal = $(this);
-        const menuParentId = null;
-        const fasyankesKode = $('input[name="fasyankes_kode"]').val();
+    $(document).ready(function () {
+        $(document).on('show.bs.modal', '#addMenuModal', function (event) {
+            const modal = $(this);
+            const menuParentId = null;
+            const fasyankesKode = $('input[name="fasyankes_kode"]').val();
 
-        $.ajax({
-            url: "<?= base_url('admin/getLastMenuOrder'); ?>",
-            type: "POST",
-            data: {
-                menu_parent_id: menuParentId,
-                fasyankes_kode: fasyankesKode
-            },
-            dataType: "json",
-            success: function (response) {
-                modal.find('input[name="menu_order"]').val(response.last_order);
-            },
-            error: function () {
-                console.error("Error fetching menu order");
-
-                console.log(modal);
-                console.log(menuParentId);
-                console.log(fasyankesKode);
-            }
+            $.ajax({
+                url: "<?= base_url('admin/getLastMenuOrder'); ?>",
+                type: "POST",
+                data: {
+                    menu_parent_id: menuParentId,
+                    fasyankes_kode: fasyankesKode
+                },
+                dataType: "json",
+                success: function (response) {
+                    console.log(response.last_order);
+                    modal.find('input[name="menu_order"]').val(response.last_order);
+                },
+                error: function () {
+                    console.error("Error fetching menu order");
+                }
+            });
         });
     });
 </script>
 
+<!-- menu order submenu -->
+<script>
+    $(document).ready(function () {
+        $(document).on('show.bs.modal', '.modal-add-submenu', function (event) {
+            var modal = $(this);
+            var menuId = modal.find('input[name="menu_parent_id"]').val();
+            var fasyankesKode = $("input[name='fasyankes_kode']").val();
+
+            $.ajax({
+                url: "<?php echo base_url('admin/getLastMenuOrder'); ?>",
+                type: "POST",
+                data: {
+                    menu_parent_id: menuId,
+                    fasyankes_kode: fasyankesKode
+                },
+                dataType: "json",
+                success: function (response) {
+                    console.log(response.last_order);
+                    modal.find('input[name="menu_order"]').val(response.last_order);
+                },
+                error: function () {
+                    console.error("Error fetching menu order");
+                }
+            });
+        });
+    });
+</script>
 
 </body>
 

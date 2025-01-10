@@ -122,7 +122,7 @@ class M_MenuAdmin extends CI_Model
         if (empty($menu_parent_id) || $menu_parent_id === null) {
             $this->db->where('menu_parent_id IS NULL');
         } else {
-            $this->db->where('menu_parent_id', (int) $menu_parent_id);
+            $this->db->where('menu_parent_id', $menu_parent_id);
         }
 
         $query = $this->db->get('menu');

@@ -466,6 +466,7 @@ class Admin extends CI_Controller
                 'menu_type' => $this->input->post('menu_type', true),
                 'menu_parent_id' => $this->input->post('menu_parent_id', true),
                 'menu_link' => $this->input->post('menu_link', true) ?: '#',
+                'menu_order' => $this->input->post('menu_order', true),
                 'fasyankes_kode' => $this->input->post('fasyankes_kode', true),
                 'active_st' => 1, // Default aktif
                 'created_at' => date('Y-m-d H:i:s')

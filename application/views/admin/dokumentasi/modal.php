@@ -213,7 +213,7 @@
 
 <!-- Modal Tambah Submenu -->
 <?php foreach ($menu_data as $menu): ?>
-    <div class="modal fade modal-blur" id="addSubmenuModal_<?php echo $menu['menu_id']; ?>" tabindex="-1"
+    <div class="modal fade modal-blur modal-add-submenu" id="addSubmenuModal_<?php echo $menu['menu_id']; ?>" tabindex="-1"
         aria-labelledby="addSubmenuModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -225,8 +225,8 @@
                 <form action="<?php echo base_url('admin/addSubmenu'); ?>" method="POST">
                     <input type="hidden" name="redirect_url" value="<?= current_url(); ?>">
                     <input type="hidden" name="fasyankes_kode" value="<?= $this->uri->segment(3); ?>">
+                    <input type="hidden" name="menu_parent_id" value="<?php echo $menu['menu_id']; ?>">
                     <div class="modal-body">
-                        <input type="hidden" name="menu_parent_id" value="<?php echo $menu['menu_id']; ?>">
                         <div class="mb-3">
                             <label for="menu_nm_<?php echo $menu['menu_id']; ?>" class="form-label">Nama Submenu</label>
                             <input type="text" class="form-control" id="menu_nm_<?php echo $menu['menu_id']; ?>"
@@ -244,6 +244,11 @@
                             <label for="menu_link_<?php echo $menu['menu_id']; ?>" class="form-label">Link Content</label>
                             <input type="text" class="form-control" id="menu_link_<?php echo $menu['menu_id']; ?>"
                                 name="menu_link">
+                        </div>
+                        <div class="mb-3">
+                            <label for="menu_order_<?php echo $menu['menu_id']; ?>" class="form-label">Menu Order</label>
+                            <input type="text" class="form-control" id="menu_order_<?php echo $menu['menu_id']; ?>"
+                                name="menu_order">
                         </div>
                     </div>
                     <div class="modal-footer">
