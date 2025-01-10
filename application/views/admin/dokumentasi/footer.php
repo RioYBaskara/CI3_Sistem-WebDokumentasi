@@ -456,6 +456,35 @@
     });
 </script>
 
+<script>
+    $(document).on('show.bs.modal', '#addMenuModal', function (event) {
+        const modal = $(this);
+        const menuParentId = null;
+        const fasyankesKode = $('input[name="fasyankes_kode"]').val();
+
+        $.ajax({
+            url: "<?= base_url('admin/getLastMenuOrder'); ?>",
+            type: "POST",
+            data: {
+                menu_parent_id: menuParentId,
+                fasyankes_kode: fasyankesKode
+            },
+            dataType: "json",
+            success: function (response) {
+                modal.find('input[name="menu_order"]').val(response.last_order);
+            },
+            error: function () {
+                console.error("Error fetching menu order");
+
+                console.log(modal);
+                console.log(menuParentId);
+                console.log(fasyankesKode);
+            }
+        });
+    });
+</script>
+
+
 </body>
 
 </html>

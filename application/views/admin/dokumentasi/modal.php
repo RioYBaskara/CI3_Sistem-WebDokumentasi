@@ -167,7 +167,7 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="menu_order" class="form-label">Urutan</label>
+                        <label for="menu_order" class="form-label">Urutan(Default terakhir/terbawah)</label>
                         <input type="number" class="form-control" name="menu_order" required>
                     </div>
                     <label class="form-label">Active?</label>

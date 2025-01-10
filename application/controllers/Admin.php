@@ -381,6 +381,18 @@ class Admin extends CI_Controller
     }
 
     // menu
+
+    // menu_order last
+    public function getLastMenuOrder()
+    {
+        $menu_parent_id = $this->input->post('menu_parent_id');
+        $fasyankes_kode = $this->input->post('fasyankes_kode');
+
+        $last_order = $this->M_MenuAdmin->getLastMenuOrder($menu_parent_id, $fasyankes_kode);
+
+        echo json_encode(['last_order' => $last_order + 1]); // Tambahkan +1 agar otomatis menjadi urutan berikutnya
+    }
+
     // Method untuk menambah menu
     public function addMenu()
     {
