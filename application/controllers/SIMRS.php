@@ -82,6 +82,21 @@ class SIMRS extends CI_Controller
         $this->load->view('SIMRS/dashboard', $data);
     }
 
+    // search fasyankes pada dashboard
+    public function searchFasyankes()
+    {
+        $search = $this->input->post('search');
+
+        if (!$search) {
+            echo json_encode([]);
+            return;
+        }
+
+        $results = $this->M_SIMRSFasyankes->searchFasyankes($search);
+
+        echo json_encode($results);
+    }
+
     // halaman dokumentasi
     public function dokumentasi($fasyankes_kode = null, $menu_url = null)
     {

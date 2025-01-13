@@ -31,10 +31,38 @@
             font-feature-settings: "cv03", "cv04", "cv11";
         }
     </style>
+
+    <style>
+        .search-fasyankes {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            z-index: 1050;
+        }
+    </style>
 </head>
 
 <body>
     <script src="<?= base_url(); ?>assets/tabler/dist/js/demo-theme.min.js?1692870487"></script>
+
+    <!-- search Fasyankes -->
+    <button class="p-3 mt-3 btn btn-square btn-ghost-link fs-4 search-fasyankes" data-bs-toggle="modal"
+        data-bs-target="#modal-search-fasyankes">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            class="icon icon-tabler icons-tabler-outline icon-tabler-report-search">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M8 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h5.697" />
+            <path d="M18 12v-5a2 2 0 0 0 -2 -2h-2" />
+            <path d="M8 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" />
+            <path d="M8 11h4" />
+            <path d="M8 15h3" />
+            <path d="M16.5 17.5m-2.5 0a2.5 2.5 0 1 0 5 0a2.5 2.5 0 1 0 -5 0" />
+            <path d="M18.5 19.5l2.5 2.5" />
+        </svg>
+        Cari Fasyankes
+    </button>
+
     <div class="page">
         <!-- Navbar -->
         <header class="navbar navbar-expand-md d-print-none">
@@ -245,6 +273,34 @@
         </div>
     </div>
 
+    <!-- Modal Search -->
+    <div class="modal modal-blur fade" id="modal-search-fasyankes" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Cari Fasyankes</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <input type="text" class="form-control" id="search-fasyankes"
+                            placeholder="Cari Fasyankes berdasarkan nama..." autofocus>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="row" id="fasyankes-results">
+                        <!-- Populate search results here -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                        Cancel
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Libs JS -->
     <script src="<?= base_url(); ?>assets/vendor/jquery/jquery.min.js"></script>
     <script src="<?= base_url(); ?>assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -268,6 +324,78 @@
             });
         });
     </script>
+
+    <script type="text/javascript">
+        jQuery(function ($) {
+            $('#modal-search-fasyankes').on('shown.bs.modal', function () {
+                $('input[id="search-fasyankes"]').focus();
+            });
+        });
+    </script>
+
+    <!-- search fasyankes -->
+    <script>
+        $(document).ready(function () {
+            $('#search-fasyankes').on('input', function () {
+                const query = $(this).val();
+
+                if (query === '') {
+                    $('#fasyankes-results').html('');
+                    return;
+                }
+
+                $.ajax({
+                    url: "<?= base_url('SIMRS/searchFasyankes') ?>",
+                    type: "POST",
+                    data: {
+                        search: query
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        $('#fasyankes-results').html('');
+
+                        if (data.length > 0) {
+                            data.forEach(function (item) {
+                                const html = `
+                            <div class="mb-1 col-sm-12" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                title="Klik untuk pergi ke halaman dokumentasi">
+                                <a href="<?= base_url('/SIMRS/dokumentasi') ?>/${item.fasyankes_kode}"
+                                    style="cursor: pointer" class="card">
+                                    <div class="card-body w-100 h-100 justify-content-between">
+                                        <div class="mb-2 d-flex align-items-center">
+                                            <div class="subheader">${item.fasyankes_tipe}</div>
+                                            <div class="ms-auto lh-1">
+                                                <div class="text-secondary">${item.fasyankes_kode}</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <h1>${item.fasyankes_nm}</h1>
+                                        </div>
+                                        <div>
+                                            <div class="d-flex">
+                                                <h4 class="m-0"><span class="text-secondary">Alamat:
+                                                    </span>${item.fasyankes_alamat_lengkap}</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>`;
+                                $('#fasyankes-results').append(html);
+                            });
+                        } else {
+                            $('#fasyankes-results').html('<p class="text-center text-muted">Tidak ada hasil ditemukan.</p>');
+                        }
+                    },
+                    error: function () {
+                        $('#fasyankes-results').html('<p class="text-center text-danger">Terjadi kesalahan. Silakan coba lagi.</p>');
+                    }
+                });
+            });
+        });
+    </script>
+
+
 </body>
 
 </html>
